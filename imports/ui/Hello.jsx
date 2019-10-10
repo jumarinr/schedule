@@ -15,7 +15,7 @@ export default class Hello extends Component {
     Meteor.call('metodoPruebat', {constante: "alfa"}, (error, resultado)=>{
       if(error){
         console.log(error);
-        
+
       }else{
         alert(resultado)
       }
@@ -30,7 +30,7 @@ export default class Hello extends Component {
   render() {
     return (
       <div>
-         <form  noValidate autoComplete="off">
+         <form  noValidate autoComplete="on">
         <Grid container style={{color: "grey"}}>
         <Grid item >
           <TextField
