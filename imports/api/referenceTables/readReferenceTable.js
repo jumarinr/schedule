@@ -10,6 +10,13 @@ export const readReferenceTable = new ValidatedMethod({
         name: { type: String }
     }).validator(),
     run({ name }) {
-
+        switch (key) {
+            case value:
+                
+                break;
+        
+            default:
+                break;
+        }
     }
 });

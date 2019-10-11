@@ -1,4 +1,4 @@
-import Users from './users';
-import Schedule from './schedule';
+import Trabajadores from './trabajadores';
+import Vacunas from './vacunas';
 
-export {Users, Schedule}
+export {Trabajadores, Vacunas}
