@@ -1,8 +1,15 @@
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { render } from 'react-dom';
-import App from '/imports/ui/Index/App'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Tracker } from 'meteor/tracker'
+import {onAuthChange, routes} from "../imports/ui/Routes/Index";
+
+
+Tracker.autorun(function(){
+    const authenticated = !! Meteor.userId();
+    onAuthChange(authenticated);
+});
 
 Meteor.startup(() => {
-  render(<App />, document.getElementById('react-target'));
+    ReactDOM.render(routes, document.getElementById('react-target'));
 });
