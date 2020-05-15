@@ -22,3 +22,4 @@ react-meteor-data       # React higher-order component for reactively tracking M
 mdg:validated-method
 aldeed:collection2
 aldeed:simple-schema
+accounts-password

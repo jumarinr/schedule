@@ -3,13 +3,20 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import SimpleSchema from 'simpl-schema';
 
 
-export const metodoPruebat = new ValidatedMethod({
-    name: 'metodoPruebat',
+export const registroUsuario = new ValidatedMethod({
+    name: 'registroUsuario',
     validate: new SimpleSchema({
-        // todoId: { type: String },
-        constante: { type: String }
+        email: { type: String },
+        password: { type: String },
+        nombre: { type: String, optional : true },
     }).validator(),
-    run({ constante }) {
-
+    run({ email, password }) {
+      console.log(this.user);
+      const isCreated = Accounts.createUser({
+        email,
+        password
+      })
+      console.log(isCreated);
+      return isCreated
     }
 });

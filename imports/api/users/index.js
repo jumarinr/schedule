@@ -1,6 +1,6 @@
 import changePassword from './changePassword';
-import create from './create';
+import registroUsuario from './create';
 import findUserById from './findUserById'
 import updateUser from './updateUser'
 
-export { changePassword, create, findUserById, updateUser }
+export { changePassword, registroUsuario, findUserById, updateUser }
