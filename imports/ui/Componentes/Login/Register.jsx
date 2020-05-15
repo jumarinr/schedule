@@ -37,21 +37,27 @@ class SignIn extends React.Component   {
       this.state = {
         email: "",
         password: "",
+        nombre: "",
       };
     }
 subirFormulario(event){
   event.preventDefault();
-  const {password, email} = this.state;
-  Meteor.call('registroUsuario', {email, password}, (err, result)=>{
+  const {password, email, nombre} = this.state;
+  Accounts.createUser({
+    username: email,
+    email,
+    password,
+    profile: {name: nombre}
+  }, (err, result)=>{
     if (err) {
       console.error(err);
-    } else {
+    }else{
       console.log(result);
     }
   })
 }
 render(){
-  const {email, password } = this.state;
+  const {email, password, nombre  } = this.state;
   const {classes} = this.props
   return (
     <Container component="main" maxWidth="xs">
@@ -61,9 +67,25 @@ render(){
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Inicio de sesión
+          Registro para Guru-Schedule
         </Typography>
-        <form className={classes.form} validate onSubmit={(event)=>this.subirFormulario(event)}>
+        <form className={classes.form} validate="true" onSubmit={(event)=>this.subirFormulario(event)}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="nombre"
+            label="Nombre completo o apodo"
+            name="nombre"
+            autoComplete="text"
+            autoFocus
+            value={nombre}
+  onChange={(e) => {
+    const { value } = e.target
+    // maybe more code here...
+    this.setState({ nombre: value })}}
+          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -96,10 +118,6 @@ render(){
     // maybe more code here...
     this.setState({ password: value })}}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Recuerdame"
-          />
           <Button
             type="submit"
             fullWidth
@@ -107,17 +125,12 @@ render(){
             color="primary"
             className={classes.submit}
           >
-            Iniciar sesión
+            Registrarme ahora!
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                ¿Olvidaste tu contraseña?
-              </Link>
-            </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
-                ¿No tienes una cuenta? Registrate aqui ahora!
+              <Link href="/" variant="body2">
+                ¿Tienes una cuenta? Ingresa aqui ahora!
               </Link>
             </Grid>
           </Grid>

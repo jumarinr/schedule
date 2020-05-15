@@ -69,7 +69,7 @@ render(){
         <Typography component="h1" variant="h5">
           Inicio de sesión
         </Typography>
-        <form className={classes.form} validate onSubmit={(event)=>this.subirFormulario(event)}>
+        <form className={classes.form} validate="true" onSubmit={(event)=>this.subirFormulario(event)}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -117,12 +117,12 @@ render(){
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="/" variant="body2">
                 ¿Olvidaste tu contraseña?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/Register" variant="body2">
                 ¿No tienes una cuenta? Registrate aqui ahora!
               </Link>
             </Grid>

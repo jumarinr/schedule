@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-import createBrowserHistory from 'history/createBrowserHistory'
+const createBrowserHistory = require('history').createBrowserHistory;
 
 import Login from '../Componentes/Login/Login.jsx';
 import Register from '../Componentes/Login/Register.jsx';

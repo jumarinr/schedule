@@ -10,7 +10,13 @@ export default class Inicio extends React.Component   {
     }
 
   componentDidMount(){
-    console.log(Meteor.userId());
+    Meteor.call('findUserById', (err, result)=>{
+      if (err) {
+        console.error(err);;
+      }else {
+        console.log(result);
+      }
+    })
   }
   render(){
     const {email, password } = this.state;
