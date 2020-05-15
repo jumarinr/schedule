@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../Header/Header.jsx';
 
 export default class Inicio extends React.Component   {
   constructor(props) {
@@ -21,5 +22,7 @@ export default class Inicio extends React.Component   {
   render(){
     const {email, password } = this.state;
     const {classes} = this.props
-    return (<div>Texto de prueba por estar logeado
-      <button onClick={()=>Meteor.logout()}>Cerrar sesión</button> </div>) } }
+    return (<div>
+      <Header sections={[{url: '/Notas', title: 'Notas'}]} title="Guru - Schedule"/>
+
+      </div>) } }

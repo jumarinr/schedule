@@ -78,7 +78,7 @@ render(){
             id="nombre"
             label="Nombre completo o apodo"
             name="nombre"
-            autoComplete="text"
+            autoComplete="true"
             autoFocus
             value={nombre}
   onChange={(e) => {

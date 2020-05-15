@@ -1,4 +1,4 @@
 
 import Schedule from './schedule';
-
-export { Schedule}
+import Enlaces from './enlaces'
+export { Schedule, Enlaces}

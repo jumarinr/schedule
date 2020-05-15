@@ -5,11 +5,13 @@ const createBrowserHistory = require('history').createBrowserHistory;
 
 import Login from '../Componentes/Login/Login.jsx';
 import Register from '../Componentes/Login/Register.jsx';
+import Perfil from '../Componentes/Perfil/Perfil.jsx';
 import Inicio from '../Componentes/Dashboard/Inicio.jsx';
+import PageNotFound from '../Componentes/PageNotFound/PageNotFound.jsx'
 
 const history = createBrowserHistory();
 const unauthenticatedPages = ['/', '/Register'];
-const authenticatedPages = ['/Inicio'];
+const authenticatedPages = ['/Inicio', '/Perfil', '/Contacto', '/MyAccount'];
 
 const publicPage = function  () {
     if (Meteor.userId()) {
@@ -28,8 +30,9 @@ export const routes = (
         <Switch>
           <Route exact path='/' component= {Login} onEnter={publicPage}/>
           <Route exact path='/Register' component={Register} onEnter={publicPage}/>
+          <Route exact path='/Perfil' component={Perfil} onEnter={privatePage}/>
           <Route exact path='/Inicio' render={ () => <Inicio greet='User'/> } onEnter={privatePage} />
-          {/* <Route component={NotFound}/> */}
+           <Route component={PageNotFound}/>
         </Switch>
     </Router>
 );
