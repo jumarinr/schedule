@@ -9,6 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Avatar from '@material-ui/core/Avatar';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import InfoIcon from '@material-ui/icons/Info';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -25,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     flexShrink: 0,
   },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
 }));
 
 export default function Header(props) {
@@ -32,16 +39,18 @@ export default function Header(props) {
   // const { sections, title } = props;
   const [title] = React.useState('Guru - Schedule');
   const [ sections, setSections ] = React.useState([]);
+  const [ userData, setuserData ] = React.useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   React.useEffect(() => { // Pass in a callback function!
     Meteor.call('readEnlaces', (err, result)=>{
       if (err) {
-        console.error(err);;
+        console.error(err);
       }else {
         setSections(result)
       }
     })
+    actualizarListado()
     }, []);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -51,7 +60,17 @@ export default function Header(props) {
     setAnchorEl(null);
   };
 
+  const actualizarListado = () =>{
+    Meteor.call('findUserById', (err, result)=>{
+      if (err) {
+        console.error(err);
+      }else {
+        setuserData(result)
+      }
+    })
+  };
   return (
+    userData && userData._id ?
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography
@@ -67,9 +86,9 @@ export default function Header(props) {
         <IconButton>
           <SearchIcon />
         </IconButton>
-        <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} variant="outlined" size="small">
-  Menu
-</Button>
+        <IconButton onClick={handleClick}>
+{userData.profilePic ? <Avatar alt="" src={userData.profilePic} /> : <Avatar >{userData.profile.name[0]}</Avatar> }
+</IconButton>
 <Menu
   id="simple-menu"
   anchorEl={anchorEl}
@@ -77,9 +96,11 @@ export default function Header(props) {
   open={Boolean(anchorEl)}
   onClose={handleClose}
 >
-  <MenuItem><Link href="/Perfil" color="inherit">Perfil</Link></MenuItem>
-  <MenuItem onClick={handleClose}>Mi Cuenta</MenuItem>
-  <MenuItem onClick={()=>Meteor.logout()}>Salir</MenuItem>
+  <MenuItem><Link href="/Perfil" color="inherit" underline="none"> <IconButton size='small'>
+{userData.profilePic ? <Avatar alt="" src={userData.profilePic} className={classes.small}/> : <Avatar  className={classes.small} >{userData.profile.name[0]}</Avatar> }
+</IconButton> &nbsp; Perfil</Link></MenuItem>
+  <MenuItem onClick={handleClose}> <IconButton size='small'><InfoIcon style={{color: '#1565c0'}}/></IconButton>&nbsp;Info. Cuenta</MenuItem>
+<MenuItem onClick={()=>Meteor.logout()}><IconButton size='small'><ExitToAppIcon style={{color: '#b71c1c'}}/> </IconButton>&nbsp; Salir</MenuItem>
 </Menu>
       </Toolbar>
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
@@ -96,7 +117,9 @@ export default function Header(props) {
           </Link>
         ))}
       </Toolbar>
+
     </React.Fragment>
+    : null
   );
 }
 

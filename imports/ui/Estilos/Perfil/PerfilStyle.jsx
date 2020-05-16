@@ -5,4 +5,8 @@ export default PerfilStyle = theme => ({
   media: {
     height: 140,
   },
+  large: {
+   width: theme.spacing(7),
+   height: theme.spacing(7),
+ },
 });

@@ -9,7 +9,7 @@ export const findUserById = new ValidatedMethod({
     validate: null,
     run() {
       const _id = Meteor.userId();
-      return Meteor.users.findOne({_id}, {fields: {username: 1, profile: 1} })
+      return Meteor.users.findOne({_id}, {fields: {services: 0} })
 
     }
 });
