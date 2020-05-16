@@ -1,62 +1,63 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Avatar from '@material-ui/core/Avatar';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import InfoIcon from '@material-ui/icons/Info';
-import CircularProgress from '@material-ui/core/CircularProgress'
+import React from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Avatar from "@material-ui/core/Avatar";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import InfoIcon from "@material-ui/icons/Info";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   toolbar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
-    padding: '0px',
-    marginTop: '-1.5%'
+    padding: "0px",
+    marginTop: "-1.5%"
   },
   toolbarTitle: {
-    flex: 1,
+    flex: 1
   },
   toolbarSecondary: {
-    justifyContent: 'left',
-    overflowX: 'auto',
+    justifyContent: "left",
+    overflowX: "auto"
   },
   toolbarLink: {
     padding: theme.spacing(1),
-    flexShrink: 0,
+    flexShrink: 0
   },
   small: {
     width: theme.spacing(3),
-    height: theme.spacing(3),
-  },
+    height: theme.spacing(3)
+  }
 }));
 
 export default function Header(props) {
   const classes = useStyles();
   // const { sections, title } = props;
-  const [title] = React.useState('Guru - Schedule');
-  const [ sections, setSections ] = React.useState([]);
-  const [ userData, setuserData ] = React.useState({});
-  const [ loadingCircle, setLoadingCircle] = React.useState(true);
+  const [title] = React.useState("Guru - Schedule");
+  const [sections, setSections] = React.useState([]);
+  const [userData, setuserData] = React.useState({});
+  const [loadingCircle, setLoadingCircle] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  React.useEffect(() => { // Pass in a callback function!
-    Meteor.call('readEnlaces', (err, result)=>{
+  React.useEffect(() => {
+    // Pass in a callback function!
+    Meteor.call("readEnlaces", (err, result) => {
       if (err) {
         console.error(err);
-      }else {
-        setSections(result)
+      } else {
+        setSections(result);
       }
-    })
-    actualizarListado()
-    }, []);
-  const handleClick = (event) => {
+    });
+    actualizarListado();
+  }, []);
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -64,16 +65,16 @@ export default function Header(props) {
     setAnchorEl(null);
   };
 
-  const actualizarListado = () =>{
-    Meteor.call('findUserById', (err, result)=>{
+  const actualizarListado = () => {
+    Meteor.call("findUserById", (err, result) => {
       if (err) {
         console.error(err);
-        setLoadingCircle(false)
-      }else {
-        setuserData(result)
-        setLoadingCircle(false)
+        setLoadingCircle(false);
+      } else {
+        setuserData(result);
+        setLoadingCircle(false);
       }
-    })
+    });
   };
   return (
     <React.Fragment>
@@ -92,27 +93,63 @@ export default function Header(props) {
           <SearchIcon />
         </IconButton>
         <IconButton onClick={handleClick}>
-          {loadingCircle ? <CircularProgress color="secondary" /> :
-userData.profilePic ? <Avatar alt="" src={userData.profilePic} /> : <Avatar >{userData.profile.name[0]}</Avatar> }
-</IconButton>
-<Menu
-  id="simple-menu"
-  anchorEl={anchorEl}
-  keepMounted
-  open={Boolean(anchorEl)}
-  onClose={handleClose}
->
-  <MenuItem><Link href="/Perfil" color="inherit" underline="none"> <IconButton size='small'>
-{userData.profilePic ? <Avatar alt="" src={userData.profilePic} className={classes.small}/> : userData.profile ? <Avatar  className={classes.small} >{userData.profile.name[0]}</Avatar> : null}
-</IconButton> &nbsp; Perfil</Link></MenuItem>
-  <MenuItem onClick={handleClose}> <IconButton size='small'><InfoIcon style={{color: '#1565c0'}}/></IconButton>&nbsp;Info. Cuenta</MenuItem>
-<MenuItem onClick={()=>Meteor.logout()}><IconButton size='small'><ExitToAppIcon style={{color: '#b71c1c'}}/> </IconButton>&nbsp; Salir</MenuItem>
-</Menu>
+          {loadingCircle ? (
+            <CircularProgress color="secondary" />
+          ) : userData.profilePic ? (
+            <Avatar alt="" src={userData.profilePic} />
+          ) : (
+            <Avatar>{userData.profile.name[0]}</Avatar>
+          )}
+        </IconButton>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem>
+            <Link href="/Perfil" color="inherit" underline="none">
+              {" "}
+              <IconButton size="small">
+                {userData.profilePic ? (
+                  <Avatar
+                    alt=""
+                    src={userData.profilePic}
+                    className={classes.small}
+                  />
+                ) : userData.profile ? (
+                  <Avatar className={classes.small}>
+                    {userData.profile.name[0]}
+                  </Avatar>
+                ) : null}
+              </IconButton>{" "}
+              &nbsp; Perfil
+            </Link>
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            {" "}
+            <IconButton size="small">
+              <InfoIcon style={{ color: "#1565c0" }} />
+            </IconButton>
+            &nbsp;Info. Cuenta
+          </MenuItem>
+          <MenuItem onClick={() => Meteor.logout()}>
+            <IconButton size="small">
+              <ExitToAppIcon style={{ color: "#b71c1c" }} />{" "}
+            </IconButton>
+            &nbsp; Salir
+          </MenuItem>
+        </Menu>
       </Toolbar>
-      <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
-        {sections.map((section) => (
+      <Toolbar
+        component="nav"
+        variant="dense"
+        className={classes.toolbarSecondary}
+      >
+        {sections.map(section => (
           <Link
-            // color={props.component === section.title ? 'textPrimary' : 'inherit'}
+            color={props.component === section.title ? "secondary" : "inherit"}
             noWrap
             // underline={props.component === section.title ? 'always' : 'none'}
             key={section.title}
@@ -120,16 +157,19 @@ userData.profilePic ? <Avatar alt="" src={userData.profilePic} /> : <Avatar >{us
             href={section.url}
             className={classes.toolbarLink}
           >
-            {props.component === section.title ? <b>{section.title}</b> : section.title}
+            {props.component === section.title ? (
+              <b>{section.title}</b>
+            ) : (
+              section.title
+            )}
           </Link>
         ))}
       </Toolbar>
-
     </React.Fragment>
   );
 }
 
 Header.propTypes = {
   sections: PropTypes.array,
-  title: PropTypes.string,
+  title: PropTypes.string
 };
