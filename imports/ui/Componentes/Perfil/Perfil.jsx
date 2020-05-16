@@ -268,10 +268,10 @@ editPerfil(){
     value={description}
     onChange={(event)=>this.setState({description: event.target.value})}
   />
-: <span>{userData.description} &nbsp; <IconButton size="small" onClick={()=>this.setState({agregarDescripcion: true, description: userData.description })} >
+: userData.description ? <span>{userData.description} &nbsp; <IconButton size="small" onClick={()=>this.setState({agregarDescripcion: true, description: userData.description })} >
   <EditIcon style={{color: '#1565c0'}}/>
 </IconButton>
-  </span>|| <Button simple="true" color="inherit" onClick={()=>this.setState({agregarDescripcion: true })} >Agregar una breve descripción</Button> }
+</span>: <Button simple="true" color="inherit" onClick={()=>this.setState({agregarDescripcion: true })} >Agregar una breve descripción</Button> }
           </Typography>
         </Grid>
         </Grid>
