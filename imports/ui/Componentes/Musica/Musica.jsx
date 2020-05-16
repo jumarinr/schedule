@@ -44,7 +44,8 @@ export default class Musica extends React.Component {
       name: "",
       src: "",
       portada: "",
-      previsualizarCancion: false
+      previsualizarCancion: false,
+      currentSong: null
     };
   }
   componentDidMount() {
@@ -55,7 +56,11 @@ export default class Musica extends React.Component {
       if (err) {
         console.error();
       } else {
-        this.setState({ playlist: result });
+        this.setState({
+          playlist: result,
+          currentMusicIndex: 0,
+          currentSong: result[0] ? result[0].src : null
+        });
       }
     });
   }
@@ -69,8 +74,13 @@ export default class Musica extends React.Component {
         if (err) {
           console.error(err);
         } else {
-          this.setState({ src: "", name: "", portada: "" });
-          this.actualizarListadoCanciones;
+          this.setState({
+            src: "",
+            name: "",
+            portada: "",
+            previsualizarCancion: false
+          });
+          this.actualizarListadoCanciones();
         }
       }
     );
@@ -78,13 +88,31 @@ export default class Musica extends React.Component {
   handleClickPrevious() {
     const { currentMusicIndex, playlist } = this.state;
     if (playlist[currentMusicIndex - 1]) {
-      this.setState({ currentMusicIndex: currentMusicIndex - 1 });
+      this.setState({ currentSong: null }, err => {
+        if (err) {
+          console.error(err);
+        } else {
+          this.setState({
+            currentMusicIndex: currentMusicIndex - 1,
+            currentSong: playlist[currentMusicIndex - 1].src
+          });
+        }
+      });
     }
   }
   handleClickNext() {
     const { currentMusicIndex, playlist } = this.state;
     if (currentMusicIndex + 2 <= playlist.length) {
-      this.setState({ currentMusicIndex: currentMusicIndex + 1 });
+      this.setState({ currentSong: null }, err => {
+        if (err) {
+          console.error(err);
+        } else {
+          this.setState({
+            currentMusicIndex: currentMusicIndex + 1,
+            currentSong: playlist[currentMusicIndex + 1].src
+          });
+        }
+      });
     }
   }
   render() {
@@ -95,7 +123,8 @@ export default class Musica extends React.Component {
       name,
       src,
       portada,
-      previsualizarCancion
+      previsualizarCancion,
+      currentSong
     } = this.state;
     return (
       <div>
@@ -119,7 +148,7 @@ export default class Musica extends React.Component {
                       header={playlist[currentMusicIndex].name}
                       autoPlayAfterSrcChange={true}
                       autoPlay={true}
-                      src={playlist[currentMusicIndex].src}
+                      src={currentSong}
                       onClickPrevious={() => this.handleClickPrevious()}
                       onClickNext={() => this.handleClickNext()}
                       customVolumeControls={[]}

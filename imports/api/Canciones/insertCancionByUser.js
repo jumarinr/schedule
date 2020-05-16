@@ -15,15 +15,20 @@ export const insertCancionByUser = new ValidatedMethod({
   run(data) {
     const userId = Meteor.userId();
 
-    const insertoCancion = Canciones.insert({
-      ...data,
-      userId,
-      fechaCreacion: new Date()
-    });
+    const consultaRepetida = Canciones.findOne({ src: data.src, userId });
+    if (!consultaRepetida) {
+      const insertoCancion = Canciones.insert({
+        ...data,
+        userId,
+        fechaCreacion: new Date()
+      });
 
-    return {
-      status: insertoCancion ? 200 : 400,
-      insertoCancion: insertoCancion ? true : false
-    };
+      return {
+        status: insertoCancion ? 200 : 400,
+        insertoCancion: insertoCancion ? true : false
+      };
+    } else {
+      throw new Meteor.Error("Canción ya existe en su libreria");
+    }
   }
 });
