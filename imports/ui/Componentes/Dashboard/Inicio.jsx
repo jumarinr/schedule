@@ -23,6 +23,6 @@ export default class Inicio extends React.Component   {
     const {email, password } = this.state;
     const {classes} = this.props
     return (<div>
-      <Header sections={[{url: '/Notas', title: 'Notas'}]} title="Guru - Schedule"/>
+      <Header component="Inicio"/>
 
       </div>) } }

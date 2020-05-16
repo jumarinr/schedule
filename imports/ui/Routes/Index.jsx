@@ -8,10 +8,12 @@ import Register from '../Componentes/Login/Register.jsx';
 import Perfil from '../Componentes/Perfil/Perfil.jsx';
 import Inicio from '../Componentes/Dashboard/Inicio.jsx';
 import PageNotFound from '../Componentes/PageNotFound/PageNotFound.jsx'
+import Musica from '../Componentes/Musica/Musica.jsx'
+import Contacto from '../Componentes/Contacto/Contacto.jsx'
 
 const history = createBrowserHistory();
 const unauthenticatedPages = ['/', '/Register'];
-const authenticatedPages = ['/Inicio', '/Perfil', '/Contacto', '/MyAccount'];
+const authenticatedPages = ['/Inicio', '/Perfil', '/Contacto', '/MyAccount', '/Musica'];
 
 const publicPage = function  () {
     if (Meteor.userId()) {
@@ -32,7 +34,9 @@ export const routes = (
           <Route exact path='/Register' component={Register} onEnter={publicPage}/>
           <Route exact path='/Perfil' component={Perfil} onEnter={privatePage}/>
           <Route exact path='/Inicio' render={ () => <Inicio greet='User'/> } onEnter={privatePage} />
-           <Route component={PageNotFound}/>
+          <Route exact path='/Musica' render={ () => <Musica greet='User'/> } onEnter={privatePage} />
+          <Route exact path='/Contacto' render={ () => <Contacto greet='User'/> } onEnter={privatePage} />
+          <Route component={PageNotFound}/>
         </Switch>
     </Router>
 );

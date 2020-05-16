@@ -17,6 +17,8 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
+    padding: '0px',
+    marginTop: '-1.5%'
   },
   toolbarTitle: {
     flex: 1,
@@ -110,14 +112,15 @@ userData.profilePic ? <Avatar alt="" src={userData.profilePic} /> : <Avatar >{us
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
         {sections.map((section) => (
           <Link
-            color="inherit"
+            // color={props.component === section.title ? 'textPrimary' : 'inherit'}
             noWrap
+            // underline={props.component === section.title ? 'always' : 'none'}
             key={section.title}
             variant="body2"
             href={section.url}
             className={classes.toolbarLink}
           >
-            {section.title}
+            {props.component === section.title ? <b>{section.title}</b> : section.title}
           </Link>
         ))}
       </Toolbar>
