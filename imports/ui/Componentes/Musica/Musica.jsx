@@ -59,7 +59,7 @@ export default class Musica extends React.Component {
         this.setState({
           playlist: result,
           currentMusicIndex: 0,
-          currentSong: result[0] ? result[0].src : null
+          currentSong: result[1] ? result[1].src : null
         });
       }
     });
