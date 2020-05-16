@@ -24,6 +24,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import CloseIcon from '@material-ui/icons/Close';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const Tooltip = ({children, tooltip, hideArrow, ...props}) => (
   <TooltipTrigger
@@ -79,17 +80,20 @@ class Perfil extends React.Component   {
         openError: false,
         openSuccess: false,
         msgError: '',
-        msgSuccess: ''
+        msgSuccess: '',
+        editarPerfil: false,
+        loadingInfo: true,
       };
     }
 
   componentDidMount(){
     Meteor.call('findUserById', (err, result)=>{
       if (err) {
-        console.error(err);;
+        console.error(err);
+        this.setState({loadingInfo: false, msgError: "Error fatal", openError: true})
       }else {
         console.log(result);
-        this.setState({userData : result })
+        this.setState({userData : result, loadingInfo: false })
       }
     })
   }
@@ -122,15 +126,9 @@ onChangeFilePortada(e) {
       reader.onload = function(e) {
         const userData = this.state.userData;
         userData.portada = e.target.result;
-        this.setState({ contentFile: e.target.result, userData});
+        this.setState({  userData, editarPerfil: true });
       }.bind(this);
 
-      // inserto las propiedades del archivo en filesName
-      this.setState({
-        nombreFile: input.files[0].name,
-        typeFile: input.files[0].type,
-        sizeFile: input.files[0].size,
-      });
     }
   }
 }
@@ -155,7 +153,7 @@ onChangeFileProfilePic(e) {
       reader.onload = function(e) {
         const userData = this.state.userData;
         userData.profilePic = e.target.result;
-        this.setState({ userData, anchorEl: null });
+        this.setState({ userData, anchorEl: null, editarPerfil: true  });
       }.bind(this);
 
     }
@@ -170,14 +168,14 @@ editPerfil(){
     Meteor.call('updateUser', {userData}, (err, result)=>{
       if (err) {
         console.error(err);
-        this.setState({msgError: "error al editar el usuario", openError: true})
+        this.setState({msgError: "error al editar el usuario", openError: true, editPerfil: true })
       }else {
-        this.setState({msgSuccess: "Usuario editado con éxito!", openSuccess: true, agregarDescripcion: false, userData: result })
+        this.setState({msgSuccess: "Usuario editado con éxito!", openSuccess: true, agregarDescripcion: false, userData: result, editPerfil: false })
       }
     } )
   }
   render(){
-    const {userData, description, anchorEl } = this.state;
+    const {userData, description, anchorEl, editarPerfil, loadingInfo } = this.state;
     const {classes} = this.props
     return (<div>
       <Header />
@@ -266,7 +264,7 @@ editPerfil(){
     rows={4}
     variant="outlined"
     value={description}
-    onChange={(event)=>this.setState({description: event.target.value})}
+    onChange={(event)=>this.setState({description: event.target.value, editarPerfil: true })}
   />
 : userData.description ? <span>{userData.description} &nbsp; <IconButton size="small" onClick={()=>this.setState({agregarDescripcion: true, description: userData.description })} >
   <EditIcon style={{color: '#1565c0'}}/>
@@ -277,9 +275,11 @@ editPerfil(){
         </Grid>
         </CardContent>
       <CardActions>
+        {editarPerfil ?
         <Button size="small" color="primary" onClick={()=>this.editPerfil()}>
           Editar Perfil
-        </Button>
+        </Button> : null
+      }
         <Button size="small" color="primary">
           Learn More
         </Button>
@@ -288,7 +288,27 @@ editPerfil(){
 
           </Grid>
         </Grid>
-      : null }
+      : loadingInfo ?
+      <Grid container justify="center"
+        alignItems="center">
+          <Grid item xs={12} md={6}>
+            <Card >
+              <CardContent>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <div style={{textAlign: 'center'}}>
+                Cargando la información...
+              </div>
+              </Grid>
+              <hr/>
+                <Grid item xs={12}>
+              <LinearProgress color="secondary" />
+              </Grid>
+              </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid> : null }
       <Snackbar
        anchorOrigin={{
          vertical: "bottom",

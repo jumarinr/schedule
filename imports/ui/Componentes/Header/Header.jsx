@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import InfoIcon from '@material-ui/icons/Info';
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -40,6 +41,7 @@ export default function Header(props) {
   const [title] = React.useState('Guru - Schedule');
   const [ sections, setSections ] = React.useState([]);
   const [ userData, setuserData ] = React.useState({});
+  const [ loadingCircle, setLoadingCircle] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   React.useEffect(() => { // Pass in a callback function!
@@ -64,13 +66,14 @@ export default function Header(props) {
     Meteor.call('findUserById', (err, result)=>{
       if (err) {
         console.error(err);
+        setLoadingCircle(false)
       }else {
         setuserData(result)
+        setLoadingCircle(false)
       }
     })
   };
   return (
-    userData && userData._id ?
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Typography
@@ -87,7 +90,8 @@ export default function Header(props) {
           <SearchIcon />
         </IconButton>
         <IconButton onClick={handleClick}>
-{userData.profilePic ? <Avatar alt="" src={userData.profilePic} /> : <Avatar >{userData.profile.name[0]}</Avatar> }
+          {loadingCircle ? <CircularProgress color="secondary" /> :
+userData.profilePic ? <Avatar alt="" src={userData.profilePic} /> : <Avatar >{userData.profile.name[0]}</Avatar> }
 </IconButton>
 <Menu
   id="simple-menu"
@@ -97,7 +101,7 @@ export default function Header(props) {
   onClose={handleClose}
 >
   <MenuItem><Link href="/Perfil" color="inherit" underline="none"> <IconButton size='small'>
-{userData.profilePic ? <Avatar alt="" src={userData.profilePic} className={classes.small}/> : <Avatar  className={classes.small} >{userData.profile.name[0]}</Avatar> }
+{userData.profilePic ? <Avatar alt="" src={userData.profilePic} className={classes.small}/> : userData.profile ? <Avatar  className={classes.small} >{userData.profile.name[0]}</Avatar> : null}
 </IconButton> &nbsp; Perfil</Link></MenuItem>
   <MenuItem onClick={handleClose}> <IconButton size='small'><InfoIcon style={{color: '#1565c0'}}/></IconButton>&nbsp;Info. Cuenta</MenuItem>
 <MenuItem onClick={()=>Meteor.logout()}><IconButton size='small'><ExitToAppIcon style={{color: '#b71c1c'}}/> </IconButton>&nbsp; Salir</MenuItem>
@@ -119,7 +123,6 @@ export default function Header(props) {
       </Toolbar>
 
     </React.Fragment>
-    : null
   );
 }
 
