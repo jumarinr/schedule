@@ -21,6 +21,15 @@ import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import QueueMusicIcon from "@material-ui/icons/QueueMusic";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import Avatar from "@material-ui/core/Avatar";
+import Fab from "@material-ui/core/Fab";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const notplaylist = [
   {
@@ -45,7 +54,8 @@ export default class Musica extends React.Component {
       src: "",
       portada: "",
       previsualizarCancion: false,
-      currentSong: null
+      currentSong: null,
+      showPlaylist: false
     };
   }
   componentDidMount() {
@@ -84,6 +94,11 @@ export default class Musica extends React.Component {
         }
       }
     );
+  }
+  handleClickPlayList(key) {
+    const { playlist } = this.state;
+    console.log(playlist, key);
+    this.setState({ currentSong: playlist[key].src, currentMusicIndex: key });
   }
   handleClickPrevious() {
     const { currentMusicIndex, playlist } = this.state;
@@ -124,7 +139,8 @@ export default class Musica extends React.Component {
       src,
       portada,
       previsualizarCancion,
-      currentSong
+      currentSong,
+      showPlaylist
     } = this.state;
     return (
       <div>
@@ -141,75 +157,169 @@ export default class Musica extends React.Component {
                     title={playlist[currentMusicIndex].name}
                   />
                   <CardContent>
-                    <AudioPlayer
-                      showDownloadProgress={true}
-                      showFilledProgress={true}
-                      showSkipControls={true}
-                      header={playlist[currentMusicIndex].name}
-                      autoPlayAfterSrcChange={true}
-                      autoPlay={true}
-                      src={currentSong}
-                      onClickPrevious={() => this.handleClickPrevious()}
-                      onClickNext={() => this.handleClickNext()}
-                      customVolumeControls={[]}
-                      onEnded={() => {
-                        if (currentMusicIndex === playlist.length - 1) {
-                          this.setState({ currentMusicIndex: 0 });
-                        } else {
-                          this.setState({
-                            currentMusicIndex: currentMusicIndex + 1
-                          });
-                        }
-                      }}
-                      customIcons={{
-                        play: (
-                          <PlayCircleFilledSharpIcon
-                            style={{ color: "#01579b", fontSize: "80%" }}
-                          />
-                        ),
-                        pause: (
-                          <PauseCircleFilledSharpIcon
-                            style={{ color: "#01579b", fontSize: "80%" }}
-                          />
-                        ),
-                        rewind: (
-                          <FastRewindSharpIcon
-                            style={{ color: "#01579b", fontSize: "80%" }}
-                          />
-                        ),
-                        forward: (
-                          <FastForwardSharpIcon
-                            style={{ color: "#01579b", fontSize: "80%" }}
-                          />
-                        ),
-                        previous: (
-                          <SkipPreviousSharpIcon
-                            style={{ color: "#01579b", fontSize: "80%" }}
-                          />
-                        ),
-                        next: (
-                          <SkipNextSharpIcon
-                            style={{ color: "#01579b", fontSize: "80%" }}
-                          />
-                        ),
-                        loop: (
-                          <LoopSharpIcon
-                            style={{ color: "#01579b", fontSize: "80%" }}
-                          />
-                        ),
-                        volume: (
-                          <VolumeUpIcon
-                            style={{ color: "#01579b", fontSize: "80%" }}
-                          />
-                        ),
-                        volumeMute: (
-                          <VolumeOffIcon
-                            style={{ color: "#01579b", fontSize: "80%" }}
-                          />
-                        )
-                      }}
-                      // other props here
-                    />
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} md={12}>
+                        <Grid container>
+                          <Grid item xs={11}>
+                            <AudioPlayer
+                              showDownloadProgress={true}
+                              showFilledProgress={true}
+                              showSkipControls={true}
+                              header={playlist[currentMusicIndex].name}
+                              autoPlayAfterSrcChange={true}
+                              autoPlay={true}
+                              src={currentSong}
+                              onClickPrevious={() => this.handleClickPrevious()}
+                              onClickNext={() => this.handleClickNext()}
+                              customVolumeControls={[]}
+                              onEnded={() => {
+                                if (currentMusicIndex === playlist.length - 1) {
+                                  this.setState({
+                                    currentMusicIndex: 0,
+                                    currentSong: playlist[0].src
+                                  });
+                                } else {
+                                  this.setState({
+                                    currentMusicIndex: currentMusicIndex + 1,
+                                    currentSong:
+                                      playlist[currentMusicIndex + 1].src
+                                  });
+                                }
+                              }}
+                              customIcons={{
+                                play: (
+                                  <PlayCircleFilledSharpIcon
+                                    style={{
+                                      color: "#01579b",
+                                      fontSize: "80%"
+                                    }}
+                                  />
+                                ),
+                                pause: (
+                                  <PauseCircleFilledSharpIcon
+                                    style={{
+                                      color: "#01579b",
+                                      fontSize: "80%"
+                                    }}
+                                  />
+                                ),
+                                rewind: (
+                                  <FastRewindSharpIcon
+                                    style={{
+                                      color: "#01579b",
+                                      fontSize: "80%"
+                                    }}
+                                  />
+                                ),
+                                forward: (
+                                  <FastForwardSharpIcon
+                                    style={{
+                                      color: "#01579b",
+                                      fontSize: "80%"
+                                    }}
+                                  />
+                                ),
+                                previous: (
+                                  <SkipPreviousSharpIcon
+                                    style={{
+                                      color: "#01579b",
+                                      fontSize: "80%"
+                                    }}
+                                  />
+                                ),
+                                next: (
+                                  <SkipNextSharpIcon
+                                    style={{
+                                      color: "#01579b",
+                                      fontSize: "80%"
+                                    }}
+                                  />
+                                ),
+                                loop: (
+                                  <LoopSharpIcon
+                                    style={{
+                                      color: "#01579b",
+                                      fontSize: "80%"
+                                    }}
+                                  />
+                                ),
+                                volume: (
+                                  <VolumeUpIcon
+                                    style={{
+                                      color: "#01579b",
+                                      fontSize: "80%"
+                                    }}
+                                  />
+                                ),
+                                volumeMute: (
+                                  <VolumeOffIcon
+                                    style={{
+                                      color: "#01579b",
+                                      fontSize: "80%"
+                                    }}
+                                  />
+                                )
+                              }}
+                              // other props here
+                            />
+                          </Grid>
+                          <Grid item xs={1}>
+                            <IconButton
+                              onClick={() =>
+                                this.setState({
+                                  showPlaylist: !this.state.showPlaylist
+                                })
+                              }
+                            >
+                              <QueueMusicIcon />
+                            </IconButton>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      {showPlaylist ? (
+                        <Grid item xs={12} md={12}>
+                          <List style={{ width: "100%" }}>
+                            {playlist.map((song, key) => {
+                              return (
+                                <ListItem
+                                  key={key}
+                                  selected={key === currentMusicIndex}
+                                >
+                                  <ListItemAvatar>
+                                    <Avatar src={song.portada} />
+                                  </ListItemAvatar>
+                                  <ListItemText
+                                    primary={song.name.substring(
+                                      0,
+                                      song.name.indexOf("-")
+                                    )}
+                                    secondary={song.name.substring(
+                                      song.name.indexOf("-"),
+                                      song.name.length
+                                    )}
+                                  />
+                                  <ListItemSecondaryAction>
+                                    <IconButton
+                                      edge="end"
+                                      aria-label="delete"
+                                      onClick={() =>
+                                        key === currentMusicIndex
+                                          ? null
+                                          : this.handleClickPlayList(key)
+                                      }
+                                    >
+                                      {key === currentMusicIndex ? null : (
+                                        <PlayCircleFilledSharpIcon />
+                                      )}
+                                    </IconButton>
+                                  </ListItemSecondaryAction>
+                                </ListItem>
+                              );
+                            })}
+                          </List>
+                        </Grid>
+                      ) : null}
+                    </Grid>
                   </CardContent>
                 </React.Fragment>
               ) : (
