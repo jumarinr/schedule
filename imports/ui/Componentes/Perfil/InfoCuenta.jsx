@@ -202,10 +202,7 @@ class InfoCuenta extends React.Component {
                         component="span"
                       >
                         {userData.description ? (
-                          <span>
-                            <b>Sobre: </b>
-                            {userData.description}
-                          </span>
+                          userData.description
                         ) : (
                           <span>
                             Agrega una descripción dando click{" "}

@@ -25,3 +25,4 @@ aldeed:simple-schema
 accounts-password
 session
 promise
+http

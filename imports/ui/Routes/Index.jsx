@@ -11,6 +11,7 @@ import Inicio from "../Componentes/Dashboard/Inicio.jsx";
 import PageNotFound from "../Componentes/PageNotFound/PageNotFound.jsx";
 import Musica from "../Componentes/Musica/Musica.jsx";
 import Contacto from "../Componentes/Contacto/Contacto.jsx";
+import Fotos from "../Componentes/Fotos/Fotos.jsx";
 
 const history = createBrowserHistory();
 const unauthenticatedPages = ["/", "/Register"];
@@ -19,7 +20,10 @@ const authenticatedPages = [
   "/Perfil",
   "/Contacto",
   "/MyAccount",
-  "/Musica"
+  "/Musica",
+  "/Calendario",
+  "/Notas",
+  "/Fotos"
 ];
 
 const publicPage = function() {
@@ -40,6 +44,7 @@ export const routes = (
       <Route exact path="/" component={Login} onEnter={publicPage} />
       <Route exact path="/Register" component={Register} onEnter={publicPage} />
       <Route exact path="/Perfil" component={Perfil} onEnter={privatePage} />
+      <Route exact path="/Fotos" component={Fotos} onEnter={privatePage} />
       <Route
         exact
         path="/MyAccount"
