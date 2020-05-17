@@ -263,8 +263,7 @@ export default class Musica extends React.Component {
                           <Grid item xs={1}>
                             <div
                               style={{
-                                display: "flex",
-                                justifyContent: "flex-end"
+                                float: "right"
                               }}
                             >
                               <IconButton
