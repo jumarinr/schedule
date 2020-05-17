@@ -13,12 +13,12 @@ import Avatar from "@material-ui/core/Avatar";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import InfoIcon from "@material-ui/icons/Info";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import AppBar from "@material-ui/core/AppBar";
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
-    padding: "0px",
-    marginTop: "-1.5%"
+    padding: "0px"
   },
   toolbarTitle: {
     flex: 1
@@ -78,93 +78,98 @@ export default function Header(props) {
   };
   return (
     <React.Fragment>
-      <Toolbar className={classes.toolbar}>
-        <Typography
-          component="h2"
-          variant="h5"
-          color="inherit"
-          align="center"
-          noWrap
-          className={classes.toolbarTitle}
-        >
-          {title}
-        </Typography>
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
-        <IconButton onClick={handleClick}>
-          {loadingCircle ? (
-            <CircularProgress color="secondary" />
-          ) : userData.profilePic ? (
-            <Avatar alt="" src={userData.profilePic} />
-          ) : (
-            <Avatar>{userData.profile.name[0]}</Avatar>
-          )}
-        </IconButton>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem>
-            <Link href="/Perfil" color="inherit" underline="none">
-              {" "}
-              <IconButton size="small">
-                {userData.profilePic ? (
-                  <Avatar
-                    alt=""
-                    src={userData.profilePic}
-                    className={classes.small}
-                  />
-                ) : userData.profile ? (
-                  <Avatar className={classes.small}>
-                    {userData.profile.name[0]}
-                  </Avatar>
-                ) : null}
-              </IconButton>{" "}
-              &nbsp; Perfil
-            </Link>
-          </MenuItem>
-          <MenuItem onClick={handleClose}>
-            {" "}
-            <IconButton size="small">
-              <InfoIcon style={{ color: "#1565c0" }} />
-            </IconButton>
-            &nbsp;Info. Cuenta
-          </MenuItem>
-          <MenuItem onClick={() => Meteor.logout()}>
-            <IconButton size="small">
-              <ExitToAppIcon style={{ color: "#b71c1c" }} />{" "}
-            </IconButton>
-            &nbsp; Salir
-          </MenuItem>
-        </Menu>
-      </Toolbar>
-      <Toolbar
-        component="nav"
-        variant="dense"
-        className={classes.toolbarSecondary}
-      >
-        {sections.map(section => (
-          <Link
-            color={props.component === section.title ? "secondary" : "inherit"}
+      <AppBar color="inherit" position="fixed">
+        <Toolbar className={classes.toolbar}>
+          <Typography
+            component="h2"
+            variant="h5"
+            color="inherit"
+            align="center"
             noWrap
-            // underline={props.component === section.title ? 'always' : 'none'}
-            key={section.title}
-            variant="body2"
-            href={section.url}
-            className={classes.toolbarLink}
+            className={classes.toolbarTitle}
           >
-            {props.component === section.title ? (
-              <b>{section.title}</b>
+            {title}
+          </Typography>
+          <IconButton>
+            <SearchIcon />
+          </IconButton>
+          <IconButton onClick={handleClick}>
+            {loadingCircle ? (
+              <CircularProgress color="secondary" />
+            ) : userData.profilePic ? (
+              <Avatar alt="" src={userData.profilePic} />
             ) : (
-              section.title
+              <Avatar>{userData.profile.name[0]}</Avatar>
             )}
-          </Link>
-        ))}
-      </Toolbar>
+          </IconButton>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem>
+              <Link href="/Perfil" color="inherit" underline="none">
+                {" "}
+                <IconButton size="small">
+                  {userData.profilePic ? (
+                    <Avatar
+                      alt=""
+                      src={userData.profilePic}
+                      className={classes.small}
+                    />
+                  ) : userData.profile ? (
+                    <Avatar className={classes.small}>
+                      {userData.profile.name[0]}
+                    </Avatar>
+                  ) : null}
+                </IconButton>{" "}
+                &nbsp; Perfil
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="/MyAccount" color="inherit" underline="none">
+                <IconButton size="small">
+                  <InfoIcon style={{ color: "#1565c0" }} />
+                </IconButton>
+                &nbsp;Info. Cuenta
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={() => Meteor.logout()}>
+              <IconButton size="small">
+                <ExitToAppIcon style={{ color: "#b71c1c" }} />{" "}
+              </IconButton>
+              &nbsp; Salir
+            </MenuItem>
+          </Menu>
+        </Toolbar>
+        <Toolbar
+          component="nav"
+          variant="dense"
+          className={classes.toolbarSecondary}
+        >
+          {sections.map(section => (
+            <Link
+              color={
+                props.component === section.title ? "secondary" : "inherit"
+              }
+              noWrap
+              // underline={props.component === section.title ? 'always' : 'none'}
+              key={section.title}
+              variant="body2"
+              href={section.url}
+              className={classes.toolbarLink}
+            >
+              {props.component === section.title ? (
+                <b>{section.title}</b>
+              ) : (
+                section.title
+              )}
+            </Link>
+          ))}
+        </Toolbar>
+      </AppBar>
     </React.Fragment>
   );
 }

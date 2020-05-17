@@ -10,7 +10,8 @@ export const insertCancionByUser = new ValidatedMethod({
     // prueba: {type: String},
     name: { type: String },
     src: { type: String },
-    portada: { type: String }
+    portada: { type: String },
+    artist: { type: String }
   }).validator(),
   run(data) {
     const userId = Meteor.userId();

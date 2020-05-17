@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../Header/Header.jsx";
+import AppBarOffset from "../Header/Machetazo.jsx";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -15,7 +16,6 @@ import PerfilStyle from "../../Estilos/Perfil/PerfilStyle.jsx";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import TooltipTrigger from "react-popper-tooltip";
 import "react-popper-tooltip/dist/styles.css";
-import AppBarOffset from "../Header/Machetazo.jsx";
 import Avatar from "@material-ui/core/Avatar";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -69,7 +69,7 @@ const Tooltip = ({ children, tooltip, hideArrow, ...props }) => (
   </TooltipTrigger>
 );
 
-class Perfil extends React.Component {
+class InfoCuenta extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -207,6 +207,7 @@ class Perfil extends React.Component {
           <Grid container justify="center" alignItems="center">
             <Grid item xs={12} md={6}>
               <Card // className={classes.root}
+                variant="outlined"
               >
                 <CardMedia
                   className={classes.media}
@@ -451,4 +452,4 @@ class Perfil extends React.Component {
   }
 }
 
-export default withStyles(PerfilStyle)(Perfil);
+export default withStyles(PerfilStyle)(InfoCuenta);
