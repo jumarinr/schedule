@@ -34,8 +34,8 @@ export const getImagenesByUser = new ValidatedMethod({
         return fotos;
       }
     } catch (e) {
-      // Got a network error, timeout, or HTTP error in the 400 or 500 range.
-      return [];
+      console.log(e);
+      throw new Meteor.Error("Error al obtener las fotos", e);
     }
   }
 });
