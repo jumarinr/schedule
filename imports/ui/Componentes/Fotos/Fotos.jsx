@@ -21,6 +21,9 @@ import UpdateIcon from "@material-ui/icons/Update";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import LoadUserPhotos from "./LoadUserPhotos";
+import OptionsButton from "./OptionsButton";
+
 export default class Fotos extends React.Component {
   constructor(props) {
     super(props);
@@ -31,19 +34,27 @@ export default class Fotos extends React.Component {
       porUrl: true,
       previsualizarFoto: false,
       hubbleImages: false,
-      loadingHubble: false
+      loadingHubble: false,
+      loadingFotos: false
     };
   }
   componentDidMount() {
     this.actualizarListadoFotos();
   }
   actualizarListadoFotos() {
-    Meteor.call("actualizarListadoFotos", (err, result) => {
+    this.setState({
+      loadingFotos: true,
+      loadingHubble: false,
+      hubbleImages: false
+    });
+    Meteor.call("getImagenesByUser", (err, result) => {
       if (err) {
-        console.error();
+        console.error(err);
       } else {
+        console.log(result);
         this.setState({
-          fotos: result.fotos
+          fotos: result.fotos,
+          loadingFotos: false
         });
       }
     });
@@ -93,6 +104,7 @@ export default class Fotos extends React.Component {
       }
     }
   }
+
   insertFoto(event) {
     event.preventDefault();
     const { title, img } = this.state;
@@ -103,9 +115,9 @@ export default class Fotos extends React.Component {
         this.setState({
           title: "",
           img: "",
-          previsualizarCancion: false
+          previsualizarFoto: false
         });
-        this.actualizarListadoCanciones();
+        this.actualizarListadoFotos();
       }
     });
   }
@@ -119,7 +131,8 @@ export default class Fotos extends React.Component {
       porUrl,
       previsualizarFoto,
       hubbleImages,
-      loadingHubble
+      loadingHubble,
+      loadingFotos
     } = this.state;
     return (
       <div>
@@ -127,29 +140,21 @@ export default class Fotos extends React.Component {
 
         <AppBarOffset />
         <AppBarOffset />
-        <div style={{ float: "right" }}>
-          <Button
-            simple="true"
-            color="secondary"
-            onClick={() => this.getHubbleRecomendations()}
-            disabled={loadingHubble}
-          >
-            {loadingHubble ? (
-              <React.Fragment>
-                <CircularProgress color="secondary" /> &nbsp; Cargando
-                listado...
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <UpdateIcon /> &nbsp;
-                {hubbleImages
-                  ? "Actualizar imagenes"
-                  : "Obtener imagenes al azar"}
-              </React.Fragment>
-            )}
-          </Button>
+        <Grid
+          container
+          direction="row"
+          justify="flex-end"
+          alignItems="flex-end"
+        >
+          <OptionsButton
+            getHubbleRecomendations={this.getHubbleRecomendations.bind(this)}
+            actualizarListadoFotos={this.actualizarListadoFotos.bind(this)}
+            loading={!!(loadingFotos || loadingHubble)}
+          />
+        </Grid>
+        <div>
+          <br />
         </div>
-        <br />
         {loadingHubble ? (
           <Grid container justify="center" alignItems="center">
             <Grid item xs={12} md={6}>
@@ -222,7 +227,7 @@ export default class Fotos extends React.Component {
                                 <form
                                   style={{ width: "100%" }}
                                   validate="true"
-                                  onSubmit={event => this.insertCancion(event)}
+                                  onSubmit={event => this.insertFoto(event)}
                                 >
                                   <TextField
                                     margin="normal"
@@ -389,11 +394,34 @@ export default class Fotos extends React.Component {
                   </CardContent>
                 </Card>
               </Grid>
-            ) : (
-              <span>nothing</span>
-            )}
+            ) : null}
           </Grid>
         )}
+        {loadingFotos ? (
+          <Grid container justify="center" alignItems="center">
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <div style={{ textAlign: "center" }}>
+                        Cargando imagenes guardadas
+                      </div>
+                    </Grid>
+                    <hr />
+                    <Grid item xs={12}>
+                      <LinearProgress color="secondary" />
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        ) : fotos && fotos.length > 0 ? (
+          <Grid container>
+            <LoadUserPhotos fotos={fotos} />
+          </Grid>
+        ) : null}
       </div>
     );
   }

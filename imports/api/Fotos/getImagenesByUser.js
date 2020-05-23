@@ -10,6 +10,6 @@ export const getImagenesByUser = new ValidatedMethod({
   run() {
     const userId = Meteor.userId();
 
-    return Fotos.find({ userId }).fetch();
+    return { fotos: Fotos.find({ userId }).fetch(), status: 200 };
   }
 });

@@ -300,13 +300,14 @@ export default class Musica extends React.Component {
                                     <IconButton
                                       edge="end"
                                       aria-label="delete"
+                                      size="small"
                                       onClick={() =>
                                         key === currentMusicIndex
                                           ? null
                                           : this.handleClickPlayList(key)
                                       }
                                     >
-                                      {key === currentMusicIndex ? null : (
+                                      {key === currentMusicIndex ? <Avatar size="small" src="https://gifimage.net/wp-content/uploads/2017/11/equalizer-gif-animation-8.gif" /> : (
                                         <PlayCircleFilledSharpIcon />
                                       )}
                                     </IconButton>
