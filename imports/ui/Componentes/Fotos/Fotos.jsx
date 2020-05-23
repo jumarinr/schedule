@@ -23,6 +23,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import LoadUserPhotos from "./LoadUserPhotos";
 import OptionsButton from "./OptionsButton";
+import AddPhotoModal from "./AddPhotoModal";
 
 export default class Fotos extends React.Component {
   constructor(props) {
@@ -35,7 +36,8 @@ export default class Fotos extends React.Component {
       previsualizarFoto: false,
       hubbleImages: false,
       loadingHubble: false,
-      loadingFotos: false
+      loadingFotos: false,
+      openModalAddPhoto: false
     };
   }
   componentDidMount() {
@@ -105,9 +107,8 @@ export default class Fotos extends React.Component {
     }
   }
 
-  insertFoto(event) {
+  insertFoto(img, title) {
     event.preventDefault();
-    const { title, img } = this.state;
     Meteor.call("insertFotoByUser", { title, img }, (err, result) => {
       if (err) {
         console.error(err);
@@ -121,6 +122,9 @@ export default class Fotos extends React.Component {
       }
     });
   }
+  openModalAddPhoto() {
+    this.setState({ openModalAddPhoto: !this.state.openModalAddPhoto });
+  }
 
   render() {
     const { classes } = this.props;
@@ -132,7 +136,8 @@ export default class Fotos extends React.Component {
       previsualizarFoto,
       hubbleImages,
       loadingHubble,
-      loadingFotos
+      loadingFotos,
+      openModalAddPhoto
     } = this.state;
     return (
       <div>
@@ -150,11 +155,17 @@ export default class Fotos extends React.Component {
             getHubbleRecomendations={this.getHubbleRecomendations.bind(this)}
             actualizarListadoFotos={this.actualizarListadoFotos.bind(this)}
             loading={!!(loadingFotos || loadingHubble)}
+            openModalAddPhoto={this.openModalAddPhoto.bind(this)}
           />
         </Grid>
         <div>
           <br />
         </div>
+        <AddPhotoModal
+          openModalAddPhoto={openModalAddPhoto}
+          handleOpenModalAddPhoto={this.openModalAddPhoto.bind(this)}
+          insertFoto={this.insertFoto.bind(this)}
+        />
         {loadingHubble ? (
           <Grid container justify="center" alignItems="center">
             <Grid item xs={12} md={6}>
@@ -227,7 +238,9 @@ export default class Fotos extends React.Component {
                                 <form
                                   style={{ width: "100%" }}
                                   validate="true"
-                                  onSubmit={event => this.insertFoto(event)}
+                                  onSubmit={event =>
+                                    this.insertFoto(img, title)
+                                  }
                                 >
                                   <TextField
                                     margin="normal"
@@ -417,7 +430,7 @@ export default class Fotos extends React.Component {
               </Card>
             </Grid>
           </Grid>
-        ) : fotos && fotos.length > 0 ? (
+        ) : !hubbleImages && !loadingHubble && fotos && fotos.length > 0 ? (
           <Grid container>
             <LoadUserPhotos fotos={fotos} />
           </Grid>

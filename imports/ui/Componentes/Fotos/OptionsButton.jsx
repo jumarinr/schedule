@@ -13,6 +13,7 @@ import MenuList from "@material-ui/core/MenuList";
 import IconButton from "@material-ui/core/IconButton";
 import UpdateIcon from "@material-ui/icons/Update";
 import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
+import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 
 export default function OptionsButton(props) {
   const [options] = React.useState([
@@ -25,6 +26,11 @@ export default function OptionsButton(props) {
       titulo: "Ver fotos",
       icon: <PhotoLibraryIcon />,
       method: "actualizarListadoFotos"
+    },
+    {
+      titulo: "Agregar foto",
+      method: "openModalAddPhoto",
+      icon: <AddPhotoAlternateIcon />
     }
   ]);
   const [open, setOpen] = React.useState(false);
@@ -32,8 +38,10 @@ export default function OptionsButton(props) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleClick = selected => {
-    if (selected || selected === 0) {
+    console.log(typeof selected);
+    if (typeof selected === "number" || selected === 0) {
       const method = options[selected].method;
+      console.log(method);
       if (method) {
         props[`${method}`]();
       }
@@ -114,7 +122,7 @@ export default function OptionsButton(props) {
                   {options.map((option, index) => (
                     <MenuItem
                       key={index}
-                      disabled={index === 2}
+                      // disabled={index === 2}
                       selected={index === selectedIndex}
                       onClick={event => handleMenuItemClick(event, index)}
                     >
