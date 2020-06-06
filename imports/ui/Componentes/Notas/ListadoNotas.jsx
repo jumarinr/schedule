@@ -32,9 +32,13 @@ import CloseIcon from "@material-ui/icons/Close";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import RefreshIcon from "@material-ui/icons/Refresh";
+import swal from "@sweetalert/with-react";
+
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 
 import NuevaNota from "./NuevaNota";
 import SingleNota from "./SingleNota";
+
 class ListadoNotas extends React.Component {
   constructor(props) {
     super(props);
@@ -72,6 +76,30 @@ class ListadoNotas extends React.Component {
     this.setState({ openModalAddPhoto: !this.state.openModalAddPhoto });
   }
 
+  openInfo() {
+    swal(
+      <div>
+        <Typography
+          style={{ textTransform: "capitalize" }}
+          color="textSecondary"
+          gutterBottom
+          variant="h5"
+          component="h2"
+        >
+          Información para tener en cuenta
+        </Typography>
+
+        <div style={{ textAlign: "left" }}>
+          <li>
+            Al refrescar la lista, editar, agregar o eliminar una nota, si se
+            esta reproduciendo un video se reiniciará
+          </li>
+          <li>Tu información se encuentra cifrada y segura</li>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const { userData, openModalAddPhoto, notas, loadingNotas } = this.state;
     const { classes } = this.props;
@@ -96,6 +124,13 @@ class ListadoNotas extends React.Component {
                 size="small"
               >
                 <RefreshIcon />
+              </IconButton>
+              <IconButton
+                color="secondary"
+                size="small"
+                onClick={() => this.openInfo()}
+              >
+                <InfoOutlinedIcon />
               </IconButton>
             </div>
           </Grid>

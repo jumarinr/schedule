@@ -48,13 +48,6 @@ export default function Header(props) {
 
   React.useEffect(() => {
     // Pass in a callback function!
-    Meteor.call("readEnlaces", (err, result) => {
-      if (err) {
-        console.error(err);
-      } else {
-        setSections(result);
-      }
-    });
     actualizarListado();
   }, []);
   const handleClick = event => {
@@ -73,6 +66,13 @@ export default function Header(props) {
       } else {
         setuserData(result);
         setLoadingCircle(false);
+        Meteor.call("readEnlaces", (err, result) => {
+          if (err) {
+            console.error(err);
+          } else {
+            setSections(result);
+          }
+        });
       }
     });
   };
@@ -149,25 +149,44 @@ export default function Header(props) {
           variant="dense"
           className={classes.toolbarSecondary}
         >
-          {sections.map(section => (
-            <Link
-              color={
-                props.component === section.title ? "secondary" : "inherit"
+          {sections
+            .filter(item => {
+              if (
+                item.title === "CuentaRegresiva" &&
+                userData &&
+                (userData.username === "jumarinr@unal.edu.co" ||
+                  userData.username === "ccueto@unal.edu.co")
+              ) {
+                return { ...item };
+              } else if (item.title !== "CuentaRegresiva") {
+                return { ...item };
               }
-              noWrap
-              // underline={props.component === section.title ? 'always' : 'none'}
-              key={section.title}
-              variant="body2"
-              href={section.url}
-              className={classes.toolbarLink}
-            >
-              {props.component === section.title ? (
-                <b>{section.title}</b>
-              ) : (
-                section.title
-              )}
-            </Link>
-          ))}
+            })
+            .map(section => (
+              <Link
+                color={
+                  props.component === section.title ? "secondary" : "inherit"
+                }
+                noWrap
+                // underline={props.component === section.title ? 'always' : 'none'}
+                key={section.title}
+                variant="body2"
+                href={section.url}
+                className={classes.toolbarLink}
+              >
+                {props.component === section.title ? (
+                  <b>
+                    {section.title === "CuentaRegresiva"
+                      ? "Cuenta Regresiva"
+                      : section.title}
+                  </b>
+                ) : section.title === "CuentaRegresiva" ? (
+                  "Cuenta Regresiva"
+                ) : (
+                  section.title
+                )}
+              </Link>
+            ))}
         </Toolbar>
       </AppBar>
     </React.Fragment>

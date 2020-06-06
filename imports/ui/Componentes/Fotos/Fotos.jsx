@@ -431,7 +431,7 @@ export default class Fotos extends React.Component {
             </Grid>
           </Grid>
         ) : !hubbleImages && !loadingHubble && fotos && fotos.length > 0 ? (
-          <Grid container>
+          <Grid container spacing={1}>
             <LoadUserPhotos fotos={fotos} />
           </Grid>
         ) : null}

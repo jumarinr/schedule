@@ -9,6 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Card from "@material-ui/core/Card";
+import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -41,6 +42,36 @@ export default function AddPhotoModal(props) {
   const handleClose = () => {
     setOpen(false);
     props.handleOpenModalAddPhoto();
+  };
+
+  onChangeFilePortada = e => {
+    // extraigo las propiedades del inputfile
+    const input = document.getElementById("img");
+
+    // Lista de formatos de archivos para ser adjuntados
+    const formatos = ["image/png", "image/jpeg", "image/jpg"];
+    console.log(input.files);
+    // ciclo para recorrer los archivos y extraer sus propiedades
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      if (!formatos.includes(input.files[0].type)) {
+        this.setState({
+          msgError: "Solo podra cargar imagenes",
+          openError: true
+        });
+        console.error("Solo podra cargar imagenes");
+      } else {
+        // Si cumple con las condiciones, inserto el archivo en file y filename
+        // convierte el archivo a base64
+        reader.readAsDataURL(input.files[0]);
+        // inserto en files el archivo en base64
+        reader.onload = function(e) {
+          console.log(e);
+          setImg(e.target.result);
+          setPrevisualizarFoto(true);
+        }.bind(this);
+      }
+    }
   };
 
   return (
@@ -121,14 +152,14 @@ export default function AddPhotoModal(props) {
                                   <input
                                     style={{ display: "none" }}
                                     // className={classes.input}
-                                    id="portada"
+                                    id="img"
                                     accept=".png,.jpg,.jpeg,.pdf"
-                                    onChange={this.onChangeFilePortada.bind(
-                                      this
-                                    )}
+                                    onChange={event =>
+                                      onChangeFilePortada(event)
+                                    }
                                     type="file"
                                   />
-                                  <label htmlFor="portada">
+                                  <label htmlFor="img">
                                     <IconButton
                                       aria-label="upload picture"
                                       component="span"
@@ -147,9 +178,7 @@ export default function AddPhotoModal(props) {
                               </span>
                               <Switch
                                 checked={porUrl}
-                                onChange={() =>
-                                  this.setState({ porUrl: !porUrl })
-                                }
+                                onChange={() => setPorUrl(!porUrl)}
                                 inputProps={{
                                   "aria-label": "secondary checkbox"
                                 }}

@@ -13,6 +13,7 @@ import Musica from "../Componentes/Musica/Musica.jsx";
 import Contacto from "../Componentes/Contacto/Contacto.jsx";
 import Fotos from "../Componentes/Fotos/Fotos.jsx";
 import ListadoNotas from "../Componentes/Notas/ListadoNotas.jsx";
+import CuentaRegresiva from "../Componentes/CuentaRegresiva/CuentaRegresiva.jsx";
 
 const history = createBrowserHistory();
 const unauthenticatedPages = ["/", "/Register"];
@@ -46,6 +47,12 @@ export const routes = (
       <Route exact path="/Register" component={Register} onEnter={publicPage} />
       <Route exact path="/Perfil" component={Perfil} onEnter={privatePage} />
       <Route exact path="/Fotos" component={Fotos} onEnter={privatePage} />
+      <Route
+        exact
+        path="/CuentaRegresiva"
+        component={CuentaRegresiva}
+        onEnter={privatePage}
+      />
       <Route
         exact
         path="/Notas"
