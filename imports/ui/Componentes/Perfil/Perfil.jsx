@@ -1,4 +1,7 @@
 import React from "react";
+import ReactQuill from "react-quill"; // ES6
+import "react-quill/dist/quill.snow.css"; // ES6
+
 import Header from "../Header/Header.jsx";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
@@ -82,8 +85,11 @@ class Perfil extends React.Component {
       msgError: "",
       msgSuccess: "",
       editarPerfil: false,
-      loadingInfo: true
+      loadingInfo: true,
+      editorHtml: "",
+      theme: "snow"
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -96,11 +102,23 @@ class Perfil extends React.Component {
           openError: true
         });
       } else {
-        console.log(result);
+        this.cargarDescripcion(result.description);
         this.setState({ userData: result, loadingInfo: false });
       }
     });
   }
+  handleChange(html) {
+    this.setState({ editorHtml: html, editarPerfil: true });
+  }
+
+  cargarDescripcion(description) {
+    if (!description.includes("<")) {
+      this.setState({ editorHtml: `<p>${description}</p>` });
+    } else {
+      this.setState({ editorHtml: description });
+    }
+  }
+
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
@@ -165,10 +183,10 @@ class Perfil extends React.Component {
     }
   }
   editPerfil() {
-    const { userData, description } = this.state;
+    const { userData, editorHtml } = this.state;
 
-    if (description) {
-      userData.description = description;
+    if (editorHtml) {
+      userData.description = editorHtml;
     }
     Meteor.call("updateUser", { userData }, (err, result) => {
       if (err) {
@@ -307,25 +325,52 @@ class Perfil extends React.Component {
                         component="span"
                       >
                         {this.state.agregarDescripcion ? (
-                          <TextField
-                            id="outlined-multiline-static"
-                            label="Algo sobre ti"
-                            multiline
-                            color="secondary"
-                            fullWidth
-                            rows={4}
-                            variant="outlined"
-                            value={description}
-                            onChange={event =>
-                              this.setState({
-                                description: event.target.value,
-                                editarPerfil: true
-                              })
-                            }
-                          />
+                          <div>
+                            {/*
+                              <TextField
+                                id="outlined-multiline-static"
+                                label="Algo sobre ti"
+                                multiline
+                                color="secondary"
+                                fullWidth
+                                rows={4}
+                                variant="outlined"
+                                value={description}
+                                onChange={event =>
+                                  this.setState({
+                                    description: event.target.value,
+                                    editarPerfil: true
+                                  })
+                                }
+                              />
+                              */}
+                            <ReactQuill
+                              theme={this.state.theme}
+                              onChange={this.handleChange}
+                              value={this.state.editorHtml}
+                              modules={Perfil.modules}
+                              formats={Perfil.formats}
+                              bounds={".app"}
+                              placeholder={"Algo sobre ti"}
+                            />
+                            <Button
+                              color="secondary"
+                              simple
+                              size="small"
+                              onClick={() =>
+                                this.setState({ agregarDescripcion: false })
+                              }
+                            >
+                              Cancelar
+                            </Button>
+                          </div>
                         ) : userData.description ? (
                           <span>
-                            {userData.description} &nbsp;{" "}
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: userData.description
+                              }}
+                            />
                             <IconButton
                               size="small"
                               onClick={() =>
@@ -450,5 +495,45 @@ class Perfil extends React.Component {
     );
   }
 }
+
+Perfil.modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ size: [] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" }
+    ],
+    ["link", "image", "video"],
+    ["clean"]
+  ],
+  clipboard: {
+    // toggle to add extra line breaks when pasting HTML:
+    matchVisual: false
+  }
+};
+/*
+ * Quill Perfil formats
+ * See https://quilljs.com/docs/formats/
+ */
+Perfil.formats = [
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+  "video"
+];
 
 export default withStyles(PerfilStyle)(Perfil);

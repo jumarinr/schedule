@@ -202,7 +202,11 @@ class InfoCuenta extends React.Component {
                         component="span"
                       >
                         {userData.description ? (
-                          userData.description
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: userData.description
+                            }}
+                          />
                         ) : (
                           <span>
                             Agrega una descripción dando click{" "}
