@@ -36,7 +36,7 @@ class CuentaRegresiva extends React.Component {
                         variant="h5"
                         component="h2"
                       >
-                        Tiempo regresivo para volver a vernos:{" "}
+                        Cuenta regresiva para volver a vernos:{" "}
                         <Countdown date={new Date("2020-08-02")} />
                       </Typography>
                       <div>
