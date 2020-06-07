@@ -17,6 +17,7 @@ export const estadisticasUsuario = new ValidatedMethod({
     const topArtistas = Promise.await(
       Canciones.rawCollection()
         .aggregate([
+          { $match: { userId: _id } },
           {
             $group: {
               _id: "$artist",
@@ -28,12 +29,18 @@ export const estadisticasUsuario = new ValidatedMethod({
         ])
         .toArray()
     );
-    const ultimaNota = Notas.find({}, { $sort: { _id: -1 }, limit: 1 }).fetch();
+    const ultimaNota = Notas.find(
+      { userId: _id },
+      { $sort: { _id: -1 }, limit: 1 }
+    ).fetch();
     const ultimoEvento = Calendario.find(
-      {},
+      { userId: _id },
       { $sort: { _id: 1 }, limit: 1 }
     ).fetch();
-    const ultimaFoto = Fotos.find({}, { $sort: { _id: -1 }, limit: 1 }).fetch();
+    const ultimaFoto = Fotos.find(
+      { userId: _id },
+      { $sort: { _id: -1 }, limit: 1 }
+    ).fetch();
 
     return {
       userData: Meteor.users.findOne({ _id }, { fields: { services: 0 } }),
