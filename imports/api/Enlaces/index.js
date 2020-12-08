@@ -1,3 +1,3 @@
-import readEnlaces from './readEnlaces.js'
+import readEnlaces from './readEnlaces.js';
 
-export {readEnlaces}
+export {readEnlaces};

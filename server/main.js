@@ -1,8 +1,22 @@
-import { Meteor } from "meteor/meteor";
+import './../imports/api';
+import './../imports/collections';
 
-import collections from "./../imports/collections";
-import api from "./../imports/api";
+import { Enlaces } from './../imports/collections';
+import { Meteor } from 'meteor/meteor';
 
-// const { Users } = collections;
+Meteor.startup(() => {
+  const enlacesPorDefecto = [
+    { url: '/Musica', title: 'Musica' },
+    { url: '/Inicio', title: 'Inicio' },
+    { url: '/Contacto', title: 'Contacto' },
+    { url: '/Fotos', title: 'Fotos' },
+    { url: '/Notas', title: 'Notas' },
+    { url: '/CuentaRegresiva', title: 'CuentaRegresiva' },
+  ];
+  const totalEnlaces = Enlaces.find().count();
 
-Meteor.startup(() => {});
+  if (!totalEnlaces) {
+    enlacesPorDefecto.forEach((enlace) => Enlaces.insert(enlace));
+  }
+
+});
