@@ -4,10 +4,10 @@ import findUserById from './findUserById';
 import updateUser from './updateUser';
 import estadisticasUsuario from './estadisticasUsuario';
 
-export {
+export default {
   changePassword,
   registroUsuario,
   findUserById,
   updateUser,
-  estadisticasUsuario
+  estadisticasUsuario,
 };

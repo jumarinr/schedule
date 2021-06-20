@@ -1,16 +1,22 @@
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
-import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
 import Fotos from '../../collections/fotos';
 
-export const getImagenesByUser = new ValidatedMethod({
+const getImagenesByUser = new ValidatedMethod({
   name: 'getImagenesByUser',
   validate: null,
   run() {
     this.unblock();
     const userId = Meteor.userId();
 
-    return { fotos: Fotos.find({ userId }).fetch(), status: 200 };
-  }
+    const fotos = Fotos.find({ userId }).fetch();
+
+    return {
+      fotos,
+      status: 200,
+    };
+  },
 });
+
+export default getImagenesByUser;
