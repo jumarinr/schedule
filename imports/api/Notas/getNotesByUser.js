@@ -1,15 +1,22 @@
-import { ValidatedMethod } from "meteor/mdg:validated-method";
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { Meteor } from 'meteor/meteor';
 
-import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
-import Notas from "../../collections/notas";
+import Notas from '../../collections/notas';
 
-export const getNotesByUser = new ValidatedMethod({
-  name: "getNotesByUser",
+const getNotesByUser = new ValidatedMethod({
+  name: 'getNotesByUser',
   validate: null,
   run() {
+    this.unblock();
     const userId = Meteor.userId();
 
-    return { notas: Notas.find({ userId }).fetch(), status: 200 };
-  }
+    const notas = Notas.find({ userId }).fetch();
+
+    return {
+      notas,
+      status: 200,
+    };
+  },
 });
+
+export default getNotesByUser;

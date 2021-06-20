@@ -1,15 +1,18 @@
-import { ValidatedMethod } from "meteor/mdg:validated-method";
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
-import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
-import Canciones from "../../collections/canciones";
+import { Meteor } from 'meteor/meteor';
+import Canciones from '../../collections/canciones';
 
-export const readCancionesByUser = new ValidatedMethod({
-  name: "readCancionesByUser",
+const readCancionesByUser = new ValidatedMethod({
+  name: 'readCancionesByUser',
   validate: null,
   run() {
+    this.unblock();
+
     const userId = Meteor.userId();
 
     return Canciones.find({ userId }).fetch();
-  }
+  },
 });
+
+export default readCancionesByUser;
