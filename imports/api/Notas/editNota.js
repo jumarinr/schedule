@@ -1,12 +1,12 @@
-import { ValidatedMethod } from "meteor/mdg:validated-method";
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
-import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
+import SimpleSchema from 'simpl-schema';
+import { Meteor } from 'meteor/meteor';
 
-import Notas from "../../collections/notas";
+import Notas from '../../collections/notas';
 
 export const editNota = new ValidatedMethod({
-  name: "editNota",
+  name: 'editNota',
   validate: new SimpleSchema({
     // prueba: {type: String},
     titulo: { type: String },
@@ -14,6 +14,7 @@ export const editNota = new ValidatedMethod({
     _id: { type: String }
   }).validator(),
   run({ titulo, descripcion, _id }) {
+    this.unblock();
     const userId = Meteor.userId();
 
     const updateNota = Notas.update(

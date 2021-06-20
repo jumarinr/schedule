@@ -1,11 +1,11 @@
-import { ValidatedMethod } from "meteor/mdg:validated-method";
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
-import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
-import Canciones from "../../collections/canciones";
+import SimpleSchema from 'simpl-schema';
+import { Meteor } from 'meteor/meteor';
+import Canciones from '../../collections/canciones';
 
 export const insertCancionByUser = new ValidatedMethod({
-  name: "insertCancionByUser",
+  name: 'insertCancionByUser',
   validate: new SimpleSchema({
     // prueba: {type: String},
     name: { type: String },
@@ -14,6 +14,7 @@ export const insertCancionByUser = new ValidatedMethod({
     artist: { type: String }
   }).validator(),
   run(data) {
+    this.unblock();
     const userId = Meteor.userId();
 
     const consultaRepetida = Canciones.findOne({ src: data.src, userId });
@@ -29,7 +30,7 @@ export const insertCancionByUser = new ValidatedMethod({
         insertoCancion: insertoCancion ? true : false
       };
     } else {
-      throw new Meteor.Error("Canción ya existe en su libreria");
+      throw new Meteor.Error('Canción ya existe en su libreria');
     }
   }
 });

@@ -1,8 +1,8 @@
-import changePassword from "./changePassword";
-import registroUsuario from "./create";
-import findUserById from "./findUserById";
-import updateUser from "./updateUser";
-import estadisticasUsuario from "./estadisticasUsuario";
+import changePassword from './changePassword';
+import registroUsuario from './create';
+import findUserById from './findUserById';
+import updateUser from './updateUser';
+import estadisticasUsuario from './estadisticasUsuario';
 
 export {
   changePassword,

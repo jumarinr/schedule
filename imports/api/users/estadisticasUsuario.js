@@ -1,18 +1,19 @@
-import { ValidatedMethod } from "meteor/mdg:validated-method";
-import { Promise } from "meteor/promise";
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { Promise } from 'meteor/promise';
 
-import Canciones from "../../collections/canciones";
-import Calendario from "../../collections/calendario";
-import Fotos from "../../collections/fotos";
-import Notas from "../../collections/notas";
+import Canciones from '../../collections/canciones';
+import Calendario from '../../collections/calendario';
+import Fotos from '../../collections/fotos';
+import Notas from '../../collections/notas';
 
-import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
+import SimpleSchema from 'simpl-schema';
+import { Meteor } from 'meteor/meteor';
 
 export const estadisticasUsuario = new ValidatedMethod({
-  name: "estadisticasUsuario",
+  name: 'estadisticasUsuario',
   validate: null,
   run() {
+    this.unblock();
     const _id = Meteor.userId();
     const topArtistas = Promise.await(
       Canciones.rawCollection()
@@ -20,7 +21,7 @@ export const estadisticasUsuario = new ValidatedMethod({
           { $match: { userId: _id } },
           {
             $group: {
-              _id: "$artist",
+              _id: '$artist',
               count: { $sum: 1 }
             }
           },

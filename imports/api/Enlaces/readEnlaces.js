@@ -5,6 +5,7 @@ export const readEnlaces = new ValidatedMethod({
   name: 'readEnlaces',
   validate: null,
   run() {
+    this.unblock();
     return Enlaces.find({}).fetch();
   }
 });

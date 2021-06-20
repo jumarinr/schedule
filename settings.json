@@ -1,7 +1,0 @@
-{
-  "galaxy.meteor.com": {
-     "env": {
-       "MONGO_URL": "mongodb+srv://root:1007223499@schedule-bdjln.mongodb.net/test?retryWrites=true"
-     }
-   }
-}
