@@ -1,27 +1,28 @@
-import { ValidatedMethod } from "meteor/mdg:validated-method";
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { Meteor } from 'meteor/meteor';
 
-import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
+import SimpleSchema from 'simpl-schema';
 
-import Notas from "../../collections/notas";
+import Notas from '../../collections/notas';
 
-export const addNote = new ValidatedMethod({
-  name: "addNote",
+const addNote = new ValidatedMethod({
+  name: 'addNote',
   validate: new SimpleSchema({
     // prueba: {type: String},
     titulo: { type: String },
-    descripcion: { type: String }
+    descripcion: { type: String },
   }).validator(),
   run({ titulo, descripcion }) {
+    this.unblock();
     const userId = Meteor.userId();
 
-    const insertNota = Notas.insert({
+    return Notas.insert({
       titulo,
       descripcion,
       userId,
-      createdAt: new Date()
+      createdAt: new Date(),
     });
-    console.log(insertNota);
-    return insertNota;
-  }
+  },
 });
+
+export default addNote;

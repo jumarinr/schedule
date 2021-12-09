@@ -1,21 +1,19 @@
-import { ValidatedMethod } from "meteor/mdg:validated-method";
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
-import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
+import SimpleSchema from 'simpl-schema';
 
-import Notas from "../../collections/notas";
+import Notas from '../../collections/notas';
 
-export const deleteNota = new ValidatedMethod({
-  name: "deleteNota",
+const deleteNota = new ValidatedMethod({
+  name: 'deleteNota',
   validate: new SimpleSchema({
     // prueba: {type: String},
-    _id: { type: String }
+    _id: { type: String },
   }).validator(),
   run({ _id }) {
-    const borrarNota = Notas.remove({
-      _id
-    });
-    console.log(borrarNota);
-    return borrarNota;
-  }
+    this.unblock();
+    return Notas.remove({ _id });
+  },
 });
+
+export default deleteNota;

@@ -1,55 +1,57 @@
-import React from "react";
-import Header from "../Header/Header.jsx";
-import AppBarOffset from "../Header/Machetazo.jsx";
-import Grid from "@material-ui/core/Grid";
-import { withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Link from "@material-ui/core/Link";
-import CardHeader from "@material-ui/core/CardHeader";
-import Collapse from "@material-ui/core/Collapse";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import PerfilStyle from "../../Estilos/Perfil/PerfilStyle.jsx";
-import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
-import TooltipTrigger from "react-popper-tooltip";
-import "react-popper-tooltip/dist/styles.css";
-import Avatar from "@material-ui/core/Avatar";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import PageviewIcon from "@material-ui/icons/Pageview";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
-import CloseIcon from "@material-ui/icons/Close";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import moment from "moment";
-import clsx from "clsx";
-import MusicNoteIcon from "@material-ui/icons/MusicNote";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import NoteIcon from "@material-ui/icons/Note";
-import Divider from "@material-ui/core/Divider";
-import EventNoteIcon from "@material-ui/icons/EventNote";
-import PhotoAlbumIcon from "@material-ui/icons/PhotoAlbum";
-import "moment/locale/es";
-
-<i class="fas fa-sticky-note"></i>;
+import React from 'react';
+import Header from '../Header/Header.jsx';
+import AppBarOffset from '../Header/Machetazo.jsx';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Link from '@material-ui/core/Link';
+import CardHeader from '@material-ui/core/CardHeader';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import PerfilStyle from '../../Estilos/Perfil/PerfilStyle.jsx';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import TooltipTrigger from 'react-popper-tooltip';
+import 'react-popper-tooltip/dist/styles.css';
+import Avatar from '@material-ui/core/Avatar';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import PageviewIcon from '@material-ui/icons/Pageview';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import CloseIcon from '@material-ui/icons/Close';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import moment from 'moment';
+import clsx from 'clsx';
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import NoteIcon from '@material-ui/icons/Note';
+import Divider from '@material-ui/core/Divider';
+import EventNoteIcon from '@material-ui/icons/EventNote';
+import PhotoAlbumIcon from '@material-ui/icons/PhotoAlbum';
+import 'moment/locale/es';
 // get our fontawesome imports
-import { faStickyNote } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStickyNote } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Tooltip = ({ children, tooltip, hideArrow, ...props }) => (
+  <i className="fas fa-sticky-note" />;
+
+const Tooltip = ({
+  children, tooltip, hideArrow, ...props
+}) => (
   <TooltipTrigger
     {...props}
     tooltip={({
@@ -57,20 +59,20 @@ const Tooltip = ({ children, tooltip, hideArrow, ...props }) => (
       tooltipRef,
       getArrowProps,
       getTooltipProps,
-      placement
+      placement,
     }) => (
       <div
         {...getTooltipProps({
           ref: tooltipRef,
-          className: "tooltip-container"
+          className: 'tooltip-container',
         })}
       >
         {!hideArrow && (
           <div
             {...getArrowProps({
               ref: arrowRef,
-              className: "tooltip-arrow",
-              "data-placement": placement
+              className: 'tooltip-arrow',
+              'data-placement': placement,
             })}
           />
         )}
@@ -82,7 +84,7 @@ const Tooltip = ({ children, tooltip, hideArrow, ...props }) => (
       <span
         {...getTriggerProps({
           ref: triggerRef,
-          className: "trigger"
+          className: 'trigger',
         })}
       >
         {children}
@@ -97,12 +99,12 @@ class InfoCuenta extends React.Component {
     this.state = {
       userData: {},
       agregarDescripcion: false,
-      description: "",
+      description: '',
       anchorEl: null,
       openError: false,
       openSuccess: false,
-      msgError: "",
-      msgSuccess: "",
+      msgError: '',
+      msgSuccess: '',
       editarPerfil: false,
       loadingInfo: true,
       expanded: false,
@@ -113,18 +115,18 @@ class InfoCuenta extends React.Component {
       topArtistas: [],
       ultimaNota: [],
       ultimaFoto: [],
-      ultimoEvento: []
+      ultimoEvento: [],
     };
   }
 
   componentDidMount() {
-    Meteor.call("estadisticasUsuario", (err, result) => {
+    Meteor.call('estadisticasUsuario', (err, result) => {
       if (err) {
         console.error(err);
         this.setState({
           loadingInfo: false,
-          msgError: "Error fatal",
-          openError: true
+          msgError: 'Error fatal',
+          openError: true,
         });
       } else {
         console.log(result);
@@ -138,11 +140,12 @@ class InfoCuenta extends React.Component {
           ultimaNota: result.ultimaNota,
           ultimaFoto: result.ultimaFoto,
           ultimoEvento: result.ultimoEvento,
-          loadingInfo: false
+          loadingInfo: false,
         });
       }
     });
   }
+
   render() {
     const {
       userData,
@@ -158,7 +161,7 @@ class InfoCuenta extends React.Component {
       topArtistas,
       ultimaNota,
       ultimaFoto,
-      ultimoEvento
+      ultimoEvento,
     } = this.state;
     const { classes } = this.props;
     return (
@@ -173,23 +176,23 @@ class InfoCuenta extends React.Component {
                 variant="outlined"
               >
                 <CardHeader
-                  avatar={
+                  avatar={(
                     <Avatar
                       alt={userData.profile.name[0]}
                       src={userData.profilePic}
                       // className={classes.large}
                     />
-                  }
+                  )}
                   title={userData.profile.name}
                   subheader={`Cuenta creada desde: ${moment(
-                    userData.createdAt
-                  ).format("dddd Do MMMM [de] YYYY [a las] h:mm a")}`}
+                    userData.createdAt,
+                  ).format('dddd Do MMMM [de] YYYY [a las] h:mm a')}`}
                 />
                 <CardMedia
                   className={classes.media}
                   image={
-                    userData.portada ||
-                    "https://ichef.bbci.co.uk/images/ic/720x405/p08bdwzk.jpg"
+                    userData.portada
+                    || 'https://ichef.bbci.co.uk/images/ic/720x405/p08bdwzk.jpg'
                   }
                   title="Random photo of hubble"
                 />
@@ -204,12 +207,13 @@ class InfoCuenta extends React.Component {
                         {userData.description ? (
                           <div
                             dangerouslySetInnerHTML={{
-                              __html: userData.description
+                              __html: userData.description,
                             }}
                           />
                         ) : (
                           <span>
-                            Agrega una descripción dando click{" "}
+                            Agrega una descripción dando click
+                            {' '}
                             <Link href="/Perfil">aquí</Link>
                           </span>
                         )}
@@ -219,11 +223,11 @@ class InfoCuenta extends React.Component {
                 </CardContent>
                 <CardActions>
                   <Grid item xs={12}>
-                    <div style={{ float: "right" }}>
+                    <div style={{ float: 'right' }}>
                       Más info.
                       <IconButton
                         className={clsx(classes.expand, {
-                          [classes.expandOpen]: expanded
+                          [classes.expandOpen]: expanded,
                         })}
                         onClick={() => this.setState({ expanded: !expanded })}
                         aria-expanded={expanded}
@@ -243,41 +247,46 @@ class InfoCuenta extends React.Component {
                         <List
                           component="nav"
                           aria-labelledby="nested-list-subheader"
-                          subheader={
+                          subheader={(
                             <ListSubheader
                               component="div"
                               id="nested-list-subheader"
                             >
                               <b>Información del usuario</b>
                             </ListSubheader>
-                          }
-                          style={{ width: "100%" }}
+                          )}
+                          style={{ width: '100%' }}
                         >
                           <ListItem>
                             <ListItemIcon>
                               <MusicNoteIcon />
                             </ListItemIcon>
                             <ListItemText
-                              primary={
+                              primary={(
                                 <span>
-                                  <b>{canciones} </b>canciones agregadas
+                                  <b>
+                                    {canciones}
+                                    {' '}
+                                  </b>
+                                  canciones agregadas
                                 </span>
-                              }
+                              )}
                               secondary={
                                 topArtistas.length > 0 ? (
                                   <span>
-                                    Principales artistas:{" "}
+                                    Principales artistas:
+                                    {' '}
                                     {topArtistas.map((item, key) => {
                                       if (key === topArtistas.length - 1) {
                                         return ` ${item._id}`;
-                                      } else {
-                                        return ` ${item._id},`;
                                       }
+                                      return ` ${item._id},`;
                                     })}
                                   </span>
                                 ) : (
                                   <span>
-                                    Para agregar canciones de click{" "}
+                                    Para agregar canciones de click
+                                    {' '}
                                     <Link href="/Musica" target="_blank">
                                       aquí
                                     </Link>
@@ -298,19 +307,26 @@ class InfoCuenta extends React.Component {
                               {/* <NoteIcon /> */}
                             </ListItemIcon>
                             <ListItemText
-                              primary={
+                              primary={(
                                 <span>
-                                  <b>{notas} </b>notas creadas
+                                  <b>
+                                    {notas}
+                                    {' '}
+                                  </b>
+                                  notas creadas
                                 </span>
-                              }
+                              )}
                               secondary={
-                                ultimaNota.length > 0 ? (
+                                ultimaNota ? (
                                   <span>
-                                    Ultima nota creada: {ultimaNota[0].nota}
+                                    Ultima nota creada:
+                                    {' '}
+                                    {ultimaNota.nota}
                                   </span>
                                 ) : (
                                   <span>
-                                    Para crear notas de click{" "}
+                                    Para crear notas de click
+                                    {' '}
                                     <Link href="/Notas" target="_blank">
                                       aquí
                                     </Link>
@@ -325,20 +341,26 @@ class InfoCuenta extends React.Component {
                               <EventNoteIcon />
                             </ListItemIcon>
                             <ListItemText
-                              primary={
+                              primary={(
                                 <span>
-                                  <b>{calendario} </b>eventos creadas
+                                  <b>
+                                    {calendario}
+                                    {' '}
+                                  </b>
+                                  eventos creadas
                                 </span>
-                              }
+                              )}
                               secondary={
-                                ultimoEvento.length > 0 ? (
+                                ultimoEvento ? (
                                   <span>
-                                    Último evento creado:{" "}
-                                    {ultimoEvento[0].evento}
+                                    Último evento creado:
+                                    {' '}
+                                    {ultimoEvento.evento}
                                   </span>
                                 ) : (
                                   <span>
-                                    Para crear eventos de click{" "}
+                                    Para crear eventos de click
+                                    {' '}
                                     <Link href="/Calendario" target="_blank">
                                       aquí
                                     </Link>
@@ -353,19 +375,26 @@ class InfoCuenta extends React.Component {
                               <PhotoAlbumIcon />
                             </ListItemIcon>
                             <ListItemText
-                              primary={
+                              primary={(
                                 <span>
-                                  <b>{fotos} </b>fotos agregadas
+                                  <b>
+                                    {fotos}
+                                    {' '}
+                                  </b>
+                                  fotos agregadas
                                 </span>
-                              }
+                              )}
                               secondary={
-                                ultimaFoto.length > 0 ? (
+                                ultimaFoto ? (
                                   <span>
-                                    Última foto agregada {ultimaFoto[0].foto}
+                                    Última foto agregada
+                                    {' '}
+                                    {ultimaFoto.foto}
                                   </span>
                                 ) : (
                                   <span>
-                                    Para agregar fotos de click{" "}
+                                    Para agregar fotos de click
+                                    {' '}
                                     <Link href="/Calendario" target="_blank">
                                       aquí
                                     </Link>
@@ -392,7 +421,7 @@ class InfoCuenta extends React.Component {
                 <CardContent>
                   <Grid container>
                     <Grid item xs={12}>
-                      <div style={{ textAlign: "center" }}>
+                      <div style={{ textAlign: 'center' }}>
                         Cargando la información...
                       </div>
                     </Grid>
@@ -408,8 +437,8 @@ class InfoCuenta extends React.Component {
         ) : null}
         <Snackbar
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
+            vertical: 'bottom',
+            horizontal: 'left',
           }}
           open={this.state.openError}
           autoHideDuration={6000}
@@ -417,7 +446,7 @@ class InfoCuenta extends React.Component {
         >
           <SnackbarContent
             style={{
-              backgroundColor: "red"
+              backgroundColor: 'red',
             }}
             message={this.state.msgError}
             action={[
@@ -429,15 +458,15 @@ class InfoCuenta extends React.Component {
                 onClick={() => this.setState({ openError: false })}
               >
                 <CloseIcon fontSize="small" />
-              </IconButton>
+              </IconButton>,
             ]}
           />
         </Snackbar>
 
         <Snackbar
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
+            vertical: 'bottom',
+            horizontal: 'left',
           }}
           open={this.state.openSuccess}
           autoHideDuration={6000}
@@ -445,7 +474,7 @@ class InfoCuenta extends React.Component {
         >
           <SnackbarContent
             style={{
-              backgroundColor: "#004d40"
+              backgroundColor: '#004d40',
             }}
             message={this.state.msgSuccess}
             action={[
@@ -457,7 +486,7 @@ class InfoCuenta extends React.Component {
                 onClick={() => this.setState({ openSuccess: false })}
               >
                 <CloseIcon fontSize="small" />
-              </IconButton>
+              </IconButton>,
             ]}
           />
         </Snackbar>

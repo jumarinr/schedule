@@ -1,41 +1,44 @@
-import { ValidatedMethod } from "meteor/mdg:validated-method";
-import { HTTP } from "meteor/http";
-import { Promise } from "meteor/promise";
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { HTTP } from 'meteor/http';
+import { Meteor } from 'meteor/meteor';
 
-import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
+import _ from 'lodash';
 
-export const getImagenesByUser = new ValidatedMethod({
-  name: "getHubbleRecomendations",
+const MIN_PAGE = 1;
+const MAX_PAGE = 184;
+const URL_PAGE_HUMBLE = 'http://hubblesite.org/api/v3/image/';
+
+const getRandomPage = () => Math.floor(Math.random() * (MAX_PAGE - MIN_PAGE) + MIN_PAGE);
+
+const getIndividualPhoto = (item) => {
+  try {
+    const image = HTTP.call('GET', `${URL_PAGE_HUMBLE}${item.id}`);
+
+    return image.data;
+  } catch (error) {
+    return {};
+  }
+};
+
+const getImagenesByUser = new ValidatedMethod({
+  name: 'getHubbleRecomendations',
   validate: null,
   run() {
     this.unblock();
-    const min = 1;
-    const max = 184;
-    const page = Math.floor(Math.random() * (max - min) + min);
-    const fotos = [];
+
+    const page = getRandomPage();
 
     try {
-      const result = HTTP.call(
-        "GET",
-        `http://hubblesite.org/api/v3/images/all?page=${page}`
-      );
-      if (result && result.statusCode === 200) {
-        const a = Promise.await(
-          result.data.map((item, key) => {
-            const image = HTTP.call(
-              "GET",
-              `http://hubblesite.org/api/v3/image/${item.id}`
-            );
-            fotos.push(image.data);
-          })
-        );
-        // console.log(fotos[0]);
-        return fotos;
-      }
+      const result = HTTP.call('GET', `http://hubblesite.org/api/v3/images/all?page=${page}`);
+
+      const dataPages = _.get(result, 'data', []);
+
+      return dataPages.map(getIndividualPhoto);
     } catch (e) {
       console.log(e);
-      throw new Meteor.Error("Error al obtener las fotos", e);
+      throw new Meteor.Error('error_consultando_fotos', 'Error al obtener las fotos');
     }
-  }
+  },
 });
+
+export default getImagenesByUser;

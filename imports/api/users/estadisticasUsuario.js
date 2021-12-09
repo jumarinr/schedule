@@ -1,57 +1,101 @@
-import { ValidatedMethod } from "meteor/mdg:validated-method";
-import { Promise } from "meteor/promise";
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { Promise } from 'meteor/promise';
+import { Meteor } from 'meteor/meteor';
 
-import Canciones from "../../collections/canciones";
-import Calendario from "../../collections/calendario";
-import Fotos from "../../collections/fotos";
-import Notas from "../../collections/notas";
+import BlueBird from 'bluebird';
 
-import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
+import Canciones from '../../collections/canciones';
+import Calendario from '../../collections/calendario';
+import Fotos from '../../collections/fotos';
+import Notas from '../../collections/notas';
 
-export const estadisticasUsuario = new ValidatedMethod({
-  name: "estadisticasUsuario",
+const estadisticasUsuario = new ValidatedMethod({
+  name: 'estadisticasUsuario',
   validate: null,
   run() {
+    this.unblock();
     const _id = Meteor.userId();
-    const topArtistas = Promise.await(
-      Canciones.rawCollection()
-        .aggregate([
-          { $match: { userId: _id } },
-          {
-            $group: {
-              _id: "$artist",
-              count: { $sum: 1 }
-            }
-          },
-          { $sort: { count: -1 } },
-          { $limit: 5 }
-        ])
-        .toArray()
-    );
-    const ultimaNota = Notas.find(
-      { userId: _id },
-      { $sort: { _id: -1 }, limit: 1 }
-    ).fetch();
-    const ultimoEvento = Calendario.find(
-      { userId: _id },
-      { $sort: { _id: 1 }, limit: 1 }
-    ).fetch();
-    const ultimaFoto = Fotos.find(
-      { userId: _id },
-      { $sort: { _id: -1 }, limit: 1 }
-    ).fetch();
 
-    return {
-      userData: Meteor.users.findOne({ _id }, { fields: { services: 0 } }),
-      canciones: Canciones.find({ userId: _id }).count(),
-      calendario: Calendario.find({ userId: _id }).count(),
-      fotos: Fotos.find({ userId: _id }).count(),
-      notas: Notas.find({ userId: _id }).count(),
-      topArtistas,
-      ultimaNota,
-      ultimaFoto,
-      ultimoEvento
-    };
-  }
+    const CancionesRawCollection = Canciones.rawCollection();
+    const NotasRawCollection = Notas.rawCollection();
+    const CalendarioRawCollection = Calendario.rawCollection();
+    const FotosRawCollection = Fotos.rawCollection();
+    const UsersRawCollection = Meteor.users.rawCollection();
+
+    const topArtistasPromesa = CancionesRawCollection
+      .aggregate([
+        {
+          $match: {
+            userId: _id,
+          },
+        }, {
+          $group: {
+            _id: '$artist',
+            count: {
+              $sum: 1,
+            },
+          },
+        }, {
+          $sort: {
+            count: -1,
+          },
+        }, {
+          $limit: 5,
+        },
+      ])
+      .toArray();
+
+    const ultimaNotaPromesa = NotasRawCollection.findOne({
+      userId: _id,
+    }, {
+      $sort: { _id: -1 },
+      limit: 1,
+      readPreference: 'secondaryPreferred',
+    });
+
+    const ultimoEventoPromesa = CalendarioRawCollection.findOne({
+      userId: _id,
+    }, {
+      $sort: { _id: 1 },
+      limit: 1,
+      readPreference: 'secondaryPreferred',
+    });
+
+    const ultimaFotoPromesa = FotosRawCollection.findOne({ userId: _id }, {
+      $sort: { _id: -1 },
+      limit: 1,
+      readPreference: 'secondaryPreferred',
+    });
+
+    const cancionesPromesa = CancionesRawCollection.count({ userId: _id });
+    const calendarioPromesa = CalendarioRawCollection.count({ userId: _id });
+    const fotosPromesa = FotosRawCollection.count({ userId: _id });
+    const notasPromesa = NotasRawCollection.count({ userId: _id });
+    const userDataPromesa = UsersRawCollection.findOne({
+      _id,
+    }, {
+      fields: {
+        services: 0,
+      },
+      readPreference: 'secondaryPreferred',
+    });
+
+    const statsPromise = BlueBird.props({
+      topArtistas: topArtistasPromesa,
+      ultimaNota: ultimaNotaPromesa,
+      ultimoEvento: ultimoEventoPromesa,
+      ultimaFoto: ultimaFotoPromesa,
+      canciones: cancionesPromesa,
+      calendario: calendarioPromesa,
+      fotos: fotosPromesa,
+      notas: notasPromesa,
+      userData: userDataPromesa,
+    });
+
+    const stats = Promise.await(statsPromise);
+
+    return { ...stats };
+  },
 });
+
+export default estadisticasUsuario;
