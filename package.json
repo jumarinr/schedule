@@ -21,7 +21,7 @@
     "bluebird": "3.7.2",
     "font-awesome": "4.7.0",
     "meteor-node-stubs": "0.4.1",
-    "moment": "2.25.3",
+    "moment": "2.29.4",
     "paladins-api": "1.5.5",
     "react": "17.0.2",
     "react-countdown": "2.2.1",
